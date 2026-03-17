@@ -1,0 +1,74 @@
+Заметка: идеи для завтра
+
+1) БД для хранения записей (даты/времени + тип записи)
+- Цель: хранить все записи (включая историю), чтобы можно было
+  показывать занятые даты/время и убирать их из кнопок выбора.
+
+Пример схемы (SQLite):
+
+CREATE TABLE IF NOT EXISTS cons_slots (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  slot_date TEXT NOT NULL,     -- ISO date: YYYY-MM-DD
+  slot_time TEXT NOT NULL,     -- HH:MM
+  status TEXT NOT NULL,        -- 'active' | 'deleted' | 'done'
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_cons_slots_date_time
+  ON cons_slots(slot_date, slot_time);
+
+Логика:
+- При создании записи вставлять новую строку со status='active'.
+- При удалении обновлять status='deleted' (не удалять физически).
+- При формировании кнопок даты/времени:
+  * получить список активных слотов (status='active')
+  * исключить их из инлайн-кнопок
+
+Пример запросов:
+- Занятые слоты на дату:
+  SELECT slot_time FROM cons_slots
+  WHERE slot_date=? AND status='active';
+
+- Все занятые даты:
+  SELECT DISTINCT slot_date FROM cons_slots
+  WHERE status='active';
+
+- Все записи которые вышли за срок по времени и дню и не были подтверждены:
+  * уведомление что опоздали на запись, из за чего вам следует записаться на другой день
+  * автоудаление записи спустя день
+
+
+2) Админ-команда: список всех записей (инлайн-страницы)
+- Команда, например: /admin_cons (или другое ключевое слово)
+- Ответ: список записей инлайн-кнопками
+  * 5 кнопок в столбик (каждая запись) // имя
+  * 6-я кнопка: «Следующая страница»
+  * при этом записи что будут скоро, идут вначале списка
+- При нажатии на запись показывать детали записи
+  * будет кнопка удаления и подтверждения прошедшой записи
+
+Псевдологика:
+- total = SELECT COUNT(*) FROM cons_slots WHERE status='active'
+- page_size = 5
+- offset = page * page_size
+- SELECT id, slot_date, slot_time, user_id FROM cons_slots
+  WHERE status='active' ORDER BY slot_date, slot_time
+  LIMIT page_size OFFSET offset
+
+Callback data:
+- запись: admin_cons:<id>
+- следующая страница: admin_cons_page:<page+1>
+
+Обработчик:
+- если callback admin_cons:<id> — показать карточку
+  (включая имя/телефон из users_data по user_id)
+- если admin_cons_page:<n> — перерисовать список
+
+Пример текста кнопки записи:
+- "YYYY-MM-DD HH:MM | user_id:123" или "DD.MM HH:MM" + имя
+
+
+3) За день до записи на определенный юзер айди скимдывать сообщение о том что завтра запись
+
+4)

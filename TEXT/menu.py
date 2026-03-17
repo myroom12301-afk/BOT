@@ -1,0 +1,67 @@
+start_menu_txt = {
+    'RU': {
+        'info': '📘 О колледже',
+        'cons': '🏫 Консультация',
+        'admis': '🎓 Поступление',
+        'contacts': '📞 Контакты',
+        'FAQ': '❓ FAQ',
+        'change_lang': '🌐 Изменение языка'
+    },
+    'EN': {
+        'info': '📘 About College',
+        'cons': '🏫 Consultation',
+        'admis': '🎓 Admission',
+        'contacts': '📞 Contacts',
+        'FAQ': '❓ FAQ',
+        'change_lang': '🌐 Change Language'
+    },
+    'KY': {
+        'info': '📘 Колледж жөнүндө',
+        'cons': '🏫 Кеңеш берүү',
+        'admis': '🎓 Кабыл алуу',
+        'contacts': '📞 Байланыштар',
+        'FAQ': '❓ FAQ',
+        'change_lang': '🌐 Тилди өзгөртүү'
+    }
+}
+
+
+start_menu_code = {
+    'info': {
+        'RU': '📘 О колледже',
+        'EN': '📘 About College',
+        'KY': '📘 Колледж жөнүндө'
+    },
+    'cons': {
+        'RU': '🏫 Консультация',
+        'EN': '🏫 Consultation',
+        'KY': '🏫 Кеңеш берүү'
+    },
+    'admis': {
+        'RU': '🎓 Поступление',
+        'EN': '🎓 Admission',
+        'KY': '🎓 Кабыл алуу'
+    },
+    'contacts': {
+        'RU': '📞 Контакты',
+        'EN': '📞 Contacts',
+        'KY': '📞 Байланыштар'
+    },
+    'FAQ': {
+        'RU': '❓ FAQ',
+        'EN': '❓ FAQ',
+        'KY': '❓ FAQ'
+    },
+    'location': {
+        'RU': '📍 Локация',
+        'EN': '📍 Location',
+        'KY': '📍 Локация'
+    },
+    'change_lang': {
+        'RU': '🌐 Изменение языка',
+        'EN': '🌐 Change Language',
+        'KY': '🌐 Тилди өзгөртүү'
+    }
+}
+
+
