@@ -88,7 +88,8 @@ async def process_date(cb: CallbackQuery, state: FSMContext):
     await cb.message.delete()
     await cb.message.answer(
         text=record_buttons[lang]['steps']['time'],
-        reply_markup=cons_time(user_id)
+        # Pass selected date so busy times can be filtered out.
+        reply_markup=cons_time(user_id, selected_date)
     )
     await state.set_state(Form.meet_time)
     await cb.answer()
