@@ -15,6 +15,28 @@ def _soft_delete_slot(cursor, user_id, slot_date, slot_time):
     )
 
 
+def _is_slot_busy(cursor, slot_date, slot_time, excluded_cons_id=None):
+    if excluded_cons_id is None:
+        cursor.execute(
+            """
+            SELECT 1 FROM cons_slots
+            WHERE slot_date = ? AND slot_time = ? AND status = 'active'
+            LIMIT 1
+            """,
+            (slot_date, slot_time),
+        )
+    else:
+        cursor.execute(
+            """
+            SELECT 1 FROM cons_slots
+            WHERE slot_date = ? AND slot_time = ? AND status = 'active' AND id != ?
+            LIMIT 1
+            """,
+            (slot_date, slot_time, excluded_cons_id),
+        )
+    return cursor.fetchone() is not None
+
+
 def init_db():
     cursor = conn.cursor()
     cursor.execute("""create table IF NOT EXISTS users_data
@@ -62,35 +84,72 @@ def init_db():
     cursor.close()
 
 
-def get_active_times(slot_date):
+def get_active_times(slot_date, excluded_cons_id=None):
     # Active times for a date to filter inline keyboards.
     cur = conn.cursor()
-    cur.execute(
-        """
-        SELECT slot_time FROM cons_slots
-        WHERE slot_date = ? AND status = 'active'
-        """,
-        (slot_date,),
-    )
+    if excluded_cons_id is None:
+        cur.execute(
+            """
+            SELECT slot_time FROM cons_slots
+            WHERE slot_date = ? AND status = 'active'
+            """,
+            (slot_date,),
+        )
+    else:
+        cur.execute(
+            """
+            SELECT slot_time FROM cons_slots
+            WHERE slot_date = ? AND status = 'active' AND id != ?
+            """,
+            (slot_date, excluded_cons_id),
+        )
     rows = cur.fetchall()
     cur.close()
     return [row[0] for row in rows]
-def add_cons(data, user_id):
-    cur = conn.cursor()
 
-    # If user already had an active slot, soft-delete it before replacing.
+
+def get_user_active_booking(user_id):
+    cur = conn.cursor()
     cur.execute(
         """
-        SELECT data, meet_time FROM users_data
-        WHERE user_id = ?
+        SELECT cs.id,
+               COALESCE(ud.name, ''),
+               COALESCE(ud.who, ''),
+               COALESCE(ud.phone_number, ''),
+               cs.slot_date,
+               cs.slot_time
+        FROM cons_slots cs
+        LEFT JOIN users_data ud ON ud.user_id = cs.user_id
+        WHERE cs.user_id = ? AND cs.status = 'active'
+        ORDER BY cs.id DESC
+        LIMIT 1
         """,
         (user_id,),
     )
-    prev = cur.fetchone()
-    if prev and prev[0] and prev[1]:
-        _soft_delete_slot(cur, user_id, prev[0], prev[1])
+    row = cur.fetchone()
+    cur.close()
+    return row
 
-    # Update current user record and increment confirmation counter.
+
+def add_cons(data, user_id, replaced_cons_id=None):
+    cur = conn.cursor()
+    slot_date = data.get('date')
+    slot_time = data.get('meet_time')
+    active_booking = get_user_active_booking(user_id)
+
+    if replaced_cons_id is None and active_booking is not None:
+        cur.close()
+        return 'has_active'
+
+    if replaced_cons_id is not None:
+        if active_booking is None or active_booking[0] != replaced_cons_id:
+            cur.close()
+            return 'missing_old'
+
+    if _is_slot_busy(cur, slot_date, slot_time, replaced_cons_id):
+        cur.close()
+        return 'slot_taken'
+
     cur.execute(
         """
         UPDATE users_data
@@ -108,7 +167,16 @@ def add_cons(data, user_id):
         )
     )
 
-    # Write booking history.
+    if replaced_cons_id is not None:
+        cur.execute(
+            """
+            UPDATE cons_slots
+            SET status = 'deleted'
+            WHERE id = ? AND status = 'active'
+            """,
+            (replaced_cons_id,),
+        )
+
     cur.execute(
         """
         INSERT INTO cons_slots (user_id, slot_date, slot_time, status)
@@ -119,19 +187,14 @@ def add_cons(data, user_id):
 
     conn.commit()
     cur.close()
+    return 'ok'
 
 
 def get_user_cons(lang, user_id):
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT name, who, phone_number, data, meet_time
-        FROM users_data
-        WHERE user_id = ?
-    """, (user_id,))
-    row = cur.fetchone()
-    if row is None or row[3] is None:
+    row = get_user_active_booking(user_id)
+    if row is None:
         return record_buttons[lang]['view_records']['no_record']
-    name, who, phone_number, data, meet_time = row
+    _, name, who, phone_number, data, meet_time = row
     text = (
         f"{fields[lang]['name']}: {name}\n"
         f"{fields[lang]['who']}: {who}\n"
@@ -166,17 +229,12 @@ def get_user_language(user_id):
 
 def del_cons(user_id):
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT data, meet_time FROM users_data WHERE user_id = ?",
-        (user_id,)
-    )
-    row = cursor.fetchone()
-    if row is None or row[0] is None or row[1] is None:
+    active_booking = get_user_active_booking(user_id)
+    if active_booking is None:
         cursor.close()
         return False
 
-    # Soft-delete the active slot to keep history.
-    _soft_delete_slot(cursor, user_id, row[0], row[1])
+    _soft_delete_slot(cursor, user_id, active_booking[4], active_booking[5])
 
     cursor.execute("""UPDATE users_data
     SET name=?, who=?, phone_number=?, data=?, meet_time=?

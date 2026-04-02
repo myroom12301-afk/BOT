@@ -2,7 +2,7 @@ from KB.RPKB.about_cons import con_kb
 from aiogram.types import Message
 from aiogram import F, Router
 from TEXT.cons_txt import record_buttons
-from servers import get_user_language, get_user_cons
+from servers import get_user_language, get_user_cons, get_user_active_booking
 from KB.RPKB.start_menu import start__menu
 from KB.INKB.cons import get_calendar
 from aiogram.fsm.scene import StateFilter
@@ -21,20 +21,22 @@ all_hand = [
 async def cons_h(message: Message, state: FSMContext):
     user_id = message.from_user.id
     lang = get_user_language(user_id)
-    if message.text in record_buttons[lang]['sign_up']['sign']:
+    if message.text == record_buttons[lang]['sign_up']['sign']:
         from aiogram.types import ReplyKeyboardRemove
-        if message.text == record_buttons[lang]['sign_up']['sign']:
-            await message.answer(
-                text=record_buttons[lang]['sign_up']['frs_m'],
-                reply_markup=ReplyKeyboardRemove()
-            )
-            await message.answer(
-                text=record_buttons[lang]['steps']['data'],
-                reply_markup=get_calendar(user_id)
-            )
-            await state.set_state(Form.date)
+        if get_user_active_booking(user_id) is not None:
+            await message.answer(text=record_buttons[lang]['sign_up']['already_have'])
+            return
+        await message.answer(
+            text=record_buttons[lang]['sign_up']['frs_m'],
+            reply_markup=ReplyKeyboardRemove()
+        )
+        await message.answer(
+            text=record_buttons[lang]['steps']['data'],
+            reply_markup=get_calendar(user_id)
+        )
+        await state.set_state(Form.date)
 
-    elif message.text in record_buttons[lang]['view_records']['sign']:
+    elif message.text == record_buttons[lang]['view_records']['sign']:
         await message.answer(text=record_buttons[lang]['view_records']['frs_m'])
         cons_text = get_user_cons(lang, user_id)
         if cons_text == record_buttons[lang]['view_records']['no_record']:

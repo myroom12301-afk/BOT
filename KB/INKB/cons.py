@@ -5,12 +5,10 @@ from TEXT.cons_txt import record_buttons, who_txt
 CON_TIMES = ['10:00', '12:00', '14:00', '16:00']  # Available consultation slots.
 
 
-def cons_time(user_id, slot_date):
+def cons_time(user_id, slot_date, excluded_cons_id=None):
     lang = get_user_language(user_id)
     builder = InlineKeyboardBuilder()
-    # Hide times that are already booked for the selected date.
-    busy_times = set(get_active_times(slot_date))
-    print(busy_times)
+    busy_times = set(get_active_times(slot_date, excluded_cons_id))
     for time_value in CON_TIMES:
         if time_value not in busy_times:
             builder.button(text=time_value, callback_data=time_value)
@@ -20,7 +18,7 @@ def cons_time(user_id, slot_date):
 
 import datetime
 
-def get_calendar(user_id):
+def get_calendar(user_id, excluded_cons_id=None):
     builder = InlineKeyboardBuilder()
     lang = get_user_language(user_id)
     today = datetime.date.today()
@@ -32,7 +30,7 @@ def get_calendar(user_id):
     max_lookahead = 365  # Prevent infinite loops if everything is booked.
 
     while shown < 9 and checked < max_lookahead:
-        busy_times = get_active_times(str(day))
+        busy_times = get_active_times(str(day), excluded_cons_id)
         if len(busy_times) < len(CON_TIMES):
             builder.button(text=day.strftime("%d.%m"), callback_data=f"date_{day}")
             shown += 1

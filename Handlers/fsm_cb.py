@@ -23,6 +23,16 @@ router = Router()
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
+
+def build_cons_preview(lang, data):
+    return (
+        f"{fields[lang]['name']}: {data.get('name')}\n"
+        f"{fields[lang]['who']}: {data.get('who')}\n"
+        f"{fields[lang]['phone']}: {data.get('number')}\n"
+        f"{fields[lang]['date']}: {data.get('date')}\n"
+        f"{fields[lang]['time']}: {data.get('meet_time')}"
+    )
+
 @router.callback_query(F.data.in_(con_time))
 async def ad(cb: CallbackQuery, state: FSMContext):
     user_id = cb.from_user.id
@@ -72,31 +82,28 @@ async def phone(m: Message, state: FSMContext):
     await m.answer(text=record_buttons[lang]['steps']['confirm'])
 
     await asyncio.sleep(1)
-    await m.answer(text=(
-    f"{fields[lang]['name']}: {data.get('name')}\n"
-    f"{fields[lang]['who']}: {data.get('who')}\n"
-    f"{fields[lang]['phone']}: {data.get('number')}\n"
-    f"{fields[lang]['date']}: {data.get('date')}\n"
-    f"{fields[lang]['time']}: {data.get('meet_time')}"), reply_markup = confim_kb(lang))
+    await m.answer(text=build_cons_preview(lang, data), reply_markup=confim_kb(lang))
 
 @router.callback_query(F.data.startswith("date_"))
 async def process_date(cb: CallbackQuery, state: FSMContext):
     selected_date = cb.data.split("_")[1]
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
+    data = await state.get_data()
     await state.update_data(date=selected_date)
     await cb.message.delete()
     await cb.message.answer(
         text=record_buttons[lang]['steps']['time'],
-        # Pass selected date so busy times can be filtered out.
-        reply_markup=cons_time(user_id, selected_date)
+        reply_markup=cons_time(user_id, selected_date, data.get('edit_cons_id'))
     )
     await state.set_state(Form.meet_time)
     await cb.answer()
 
 @router.message(Form.conf)
 async def block_text_on_confirm(message: Message):
-    await message.answer(text="👆🏻")
+    user_id = message.from_user.id
+    lang = get_user_language(user_id)
+    await message.answer(text=record_buttons[lang]['steps']['confirm_pointer'])
 
 
 @router.callback_query(F.data=='conf')
@@ -104,9 +111,41 @@ async def confirm(cb: CallbackQuery, state: FSMContext):
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
     data = await state.get_data()
-    add_cons(data, user_id)
+    result = add_cons(data, user_id, data.get('edit_cons_id'))
+
+    if result == 'slot_taken':
+        await cb.message.delete()
+        await cb.message.answer(text=record_buttons[lang]['steps']['slot_taken'])
+        await cb.message.answer(
+            text=record_buttons[lang]['steps']['time'],
+            reply_markup=cons_time(user_id, data.get('date'), data.get('edit_cons_id'))
+        )
+        await state.set_state(Form.meet_time)
+        await cb.answer()
+        return
+
+    if result == 'has_active':
+        await cb.message.delete()
+        await cb.message.answer(text=record_buttons[lang]['sign_up']['already_have'])
+        await cb.message.answer(text=record_buttons[lang]['back']['frs_m'], reply_markup=con_kb(user_id))
+        await state.clear()
+        await cb.answer()
+        return
+
+    if result == 'missing_old':
+        await cb.message.delete()
+        await cb.message.answer(text=record_buttons[lang]['view_records']['no_record'])
+        await cb.message.answer(text=record_buttons[lang]['back']['frs_m'], reply_markup=con_kb(user_id))
+        await state.clear()
+        await cb.answer()
+        return
+
     await cb.message.delete()
-    await cb.message.answer(text=record_buttons[lang]['steps']['success'])
+    await cb.message.answer(
+        text=record_buttons[lang]['steps']['edit_success']
+        if data.get('edit_cons_id') is not None
+        else record_buttons[lang]['steps']['success']
+    )
     await asyncio.sleep(1)
     await cb.message.answer(text=record_buttons[lang]['back']['frs_m'], reply_markup=con_kb(user_id))
     await state.clear()

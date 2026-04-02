@@ -2,7 +2,9 @@ record_buttons = {
     'RU': {
         'sign_up': {
             'sign': '🕐 Записаться',
-            'frs_m': 'Начнём запись на консультацию 👇'
+            'frs_m': 'Начнём запись на консультацию 👇',
+            'edit_frs_m': 'Изменим вашу запись на консультацию 👇',
+            'already_have': 'У вас уже есть активная запись. Управлять ею можно в разделе «Ваша запись».'
         },
         'view_records': {
             'sign': '📋 Ваша запись',
@@ -34,14 +36,19 @@ record_buttons = {
             'data': 'Выберите дату:',
 
             'confirm': 'Проверьте данные и подтвердите запись:',
-            'success': 'Вы успешно записались на консультацию!'
+            'success': 'Вы успешно записались на консультацию!',
+            'edit_success': 'Ваша запись успешно изменена!',
+            'slot_taken': 'Это время уже занято. Пожалуйста, выберите другое.',
+            'confirm_pointer': '👆🏻'
         }
     },
 
     'KY': {
         'sign_up': {
             'sign': '🕐 Катталуу',
-            'frs_m': 'Консультацияга жазылууну баштайлы 👇'
+            'frs_m': 'Консультацияга жазылууну баштайлы 👇',
+            'edit_frs_m': 'Жазууңузду өзгөртөлү 👇',
+            'already_have': 'Сизде активдүү жазуу бар. Аны «Сиздин жазууңуз» бөлүмүнөн башкара аласыз.'
         },
         'view_records': {
             'sign': '📋 Сиздин жазууңуз',
@@ -73,7 +80,10 @@ record_buttons = {
             'data': 'Күндү тандаңыз:',
 
             'confirm': 'Маалыматтарды текшерип, ырастагыла',
-            'success': 'Сиз консультацияга ийгиликтүү катталдыңыз!'
+            'success': 'Сиз консультацияга ийгиликтүү катталдыңыз!',
+            'edit_success': 'Жазууңуз ийгиликтүү өзгөртүлдү!',
+            'slot_taken': 'Бул убакыт бош эмес. Башка убакытты тандаңыз.',
+            'confirm_pointer': '👆🏻'
         }
     },
 
@@ -81,7 +91,9 @@ record_buttons = {
         'sign_up': {
             'sign': '🕐 Sign Up',
             'frs_m': "Let's start scheduling your consultation 👇"
-
+            ,
+            'edit_frs_m': "Let's update your consultation booking 👇",
+            'already_have': 'You already have an active booking. You can manage it in “Your booking”.'
         },
         'view_records': {
             'sign': '📋 Your Record',
@@ -113,7 +125,10 @@ record_buttons = {
 'data': 'Choose a date:',
 
             'confirm': 'Please check the data and confirm',
-            'success': 'You have successfully signed up for a consultation!'
+            'success': 'You have successfully signed up for a consultation!',
+            'edit_success': 'Your booking has been updated successfully!',
+            'slot_taken': 'This time is already booked. Please choose another one.',
+            'confirm_pointer': '👆🏻'
         }
     }
 }
