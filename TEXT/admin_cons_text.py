@@ -21,3 +21,10 @@ admin_cons_text = {
     'time': 'Time',
     'status': 'Status',
 }
+
+
+booking_confirmed_user_text = {
+    'RU': 'Ваша запись подтверждена администрацией',
+    'EN': 'Your booking has been confirmed by the administration',
+    'KY': 'Сиздин жазууңуз администрация тарабынан ырасталды',
+}

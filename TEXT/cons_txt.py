@@ -36,8 +36,8 @@ record_buttons = {
             'data': 'Выберите дату:',
 
             'confirm': 'Проверьте данные и подтвердите запись:',
-            'success': 'Вы успешно записались на консультацию!',
-            'edit_success': 'Ваша запись успешно изменена!',
+            'success': 'Вы успешно записались на консультацию!\n\nЕсли возникли вопросы, можете позвонить в колледж, а также оставить отзыв о работе бота.',
+            'edit_success': 'Ваша запись успешно изменена!\n\nЕсли возникли вопросы, можете позвонить в колледж, а также оставить отзыв о работе бота.',
             'slot_taken': 'Это время уже занято. Пожалуйста, выберите другое.',
             'confirm_pointer': '👆🏻'
         }
@@ -80,8 +80,8 @@ record_buttons = {
             'data': 'Күндү тандаңыз:',
 
             'confirm': 'Маалыматтарды текшерип, ырастагыла',
-            'success': 'Сиз консультацияга ийгиликтүү катталдыңыз!',
-            'edit_success': 'Жазууңуз ийгиликтүү өзгөртүлдү!',
+            'success': 'Сиз консультацияга ийгиликтүү катталдыңыз!\n\nЭгер суроолоруңуз болсо, колледжге чалсаңыз болот, ошондой эле боттун иши боюнча пикир калтырсаңыз болот.',
+            'edit_success': 'Жазууңуз ийгиликтүү өзгөртүлдү!\n\nЭгер суроолоруңуз болсо, колледжге чалсаңыз болот, ошондой эле боттун иши боюнча пикир калтырсаңыз болот.',
             'slot_taken': 'Бул убакыт бош эмес. Башка убакытты тандаңыз.',
             'confirm_pointer': '👆🏻'
         }
@@ -125,8 +125,8 @@ record_buttons = {
 'data': 'Choose a date:',
 
             'confirm': 'Please check the data and confirm',
-            'success': 'You have successfully signed up for a consultation!',
-            'edit_success': 'Your booking has been updated successfully!',
+            'success': 'You have successfully signed up for a consultation!\n\nIf you have any questions, you can call the college and also leave feedback about the bot.',
+            'edit_success': 'Your booking has been updated successfully!\n\nIf you have any questions, you can call the college and also leave feedback about the bot.',
             'slot_taken': 'This time is already booked. Please choose another one.',
             'confirm_pointer': '👆🏻'
         }

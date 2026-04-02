@@ -5,12 +5,13 @@ from aiogram.filters import Command
 from aiogram.types import CallbackQuery, Message
 
 from KB.INKB.admin_cons import build_admin_cons_card_kb, build_admin_cons_list_kb
-from TEXT.admin_cons_text import admin_cons_text
+from TEXT.admin_cons_text import admin_cons_text, booking_confirmed_user_text
 from config import ADMIN_IDS
 from servers import (
     get_active_consultations_count,
     get_active_consultations_page,
     get_consultation_by_id,
+    get_user_language,
     update_consultation_status,
 )
 
@@ -167,6 +168,11 @@ async def admin_cons_done_callback(callback: CallbackQuery):
         return
 
     cons_id = int(callback.data.split(':')[1])
+    booking = get_consultation_by_id(cons_id)
+    if booking is None:
+        await callback.answer(admin_cons_text['booking_not_found'], show_alert=True)
+        return
+
     updated = update_consultation_status(cons_id, 'done')
 
     if not updated:
@@ -174,6 +180,8 @@ async def admin_cons_done_callback(callback: CallbackQuery):
         await render_first_admin_page(message)
         return
 
+    user_lang = get_user_language(booking[3]) or 'RU'
+    await callback.bot.send_message(booking[3], booking_confirmed_user_text[user_lang])
     await render_first_admin_page(message)
     await callback.answer(admin_cons_text['booking_confirmed'])
 
