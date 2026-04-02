@@ -1,0 +1,23 @@
+# Все пользовательские тексты для admin_cons храним отдельно от логики.
+admin_cons_text = {
+    'access_denied': 'You do not have access to this command',
+    'message_not_available': 'Message is not available',
+    'list_title': 'Active consultation bookings:\nPage {page}',
+    'empty': 'No active bookings',
+    'no_name': 'No name',
+    'next_page': 'Next page',
+    'confirm': 'Confirm',
+    'delete': 'Delete',
+    'back_to_list': 'Back to list',
+    'booking_not_found': 'Booking not found',
+    'booking_not_active': 'This booking is no longer active',
+    'booking_confirmed': 'Booking confirmed',
+    'booking_deleted': 'Booking deleted',
+    'card_title': 'Booking #{id}',
+    'name': 'Name',
+    'phone': 'Phone',
+    'user_id': 'User ID',
+    'date': 'Date',
+    'time': 'Time',
+    'status': 'Status',
+}

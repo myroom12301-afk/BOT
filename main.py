@@ -1,5 +1,6 @@
 from aiogram import Bot, Dispatcher
 from config import TOKEN
+from Handlers.admin_cons import router as admin_cons_router
 from Handlers.start import router as start_router
 from Handlers.callback_data import router as callback_router
 from Handlers.main_choose import router as about_college_router
@@ -19,6 +20,8 @@ init_db()
 
 async def main():
     disp.include_router(start_router)
+    # Подключаем отдельный router для админского просмотра консультаций.
+    disp.include_router(admin_cons_router)
     disp.include_router(fsm_router)
     disp.include_router(callback_router)
     disp.include_router(about_college_router)

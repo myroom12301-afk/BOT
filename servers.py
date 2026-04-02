@@ -184,3 +184,83 @@ def del_cons(user_id):
     conn.commit()
     cursor.close()
     return True
+
+
+def get_active_consultations_count():
+    # Считаем все активные записи для пагинации в админском списке.
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT COUNT(*)
+        FROM cons_slots
+        WHERE status = 'active'
+        """
+    )
+    count = cursor.fetchone()[0]
+    cursor.close()
+    return count
+
+
+def get_active_consultations_page(page, page_size=5):
+    # Получаем одну страницу активных записей с именем пользователя из users_data.
+    offset = max(page - 1, 0) * page_size
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT cs.id,
+               cs.slot_date,
+               cs.slot_time,
+               cs.user_id,
+               COALESCE(ud.name, '')
+        FROM cons_slots cs
+        LEFT JOIN users_data ud ON ud.user_id = cs.user_id
+        WHERE cs.status = 'active'
+        ORDER BY cs.slot_date ASC, cs.slot_time ASC
+        LIMIT ? OFFSET ?
+        """,
+        (page_size, offset),
+    )
+    rows = cursor.fetchall()
+    cursor.close()
+    return rows
+
+
+def get_consultation_by_id(cons_id):
+    # Получаем полную карточку одной записи для админского просмотра.
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT cs.id,
+               COALESCE(ud.name, ''),
+               COALESCE(ud.phone_number, ''),
+               cs.user_id,
+               cs.slot_date,
+               cs.slot_time,
+               cs.status
+        FROM cons_slots cs
+        LEFT JOIN users_data ud ON ud.user_id = cs.user_id
+        WHERE cs.id = ?
+        LIMIT 1
+        """,
+        (cons_id,),
+    )
+    row = cursor.fetchone()
+    cursor.close()
+    return row
+
+
+def update_consultation_status(cons_id, status):
+    # Меняем статус только у активной записи, чтобы не трогать уже обработанные записи.
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        UPDATE cons_slots
+        SET status = ?
+        WHERE id = ? AND status = 'active'
+        """,
+        (status, cons_id),
+    )
+    updated = cursor.rowcount > 0
+    conn.commit()
+    cursor.close()
+    return updated
