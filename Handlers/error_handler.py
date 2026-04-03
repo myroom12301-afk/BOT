@@ -1,6 +1,7 @@
 import traceback
 
 from aiogram import Router
+from aiogram.exceptions import TelegramAPIError
 from aiogram.types import CallbackQuery, ErrorEvent, Message
 
 from config import ADMIN_IDS
@@ -88,10 +89,17 @@ async def _send_callback_error(callback: CallbackQuery):
 
 async def _notify_admins(event: ErrorEvent):
     admin_text = _build_admin_error_text(event)
+    bot = None
+    if event.update.message is not None:
+        bot = event.update.message.bot
+    elif event.update.callback_query is not None:
+        bot = event.update.callback_query.bot
+    if bot is None:
+        return
     for admin_id in ADMIN_IDS:
         try:
-            await event.bot.send_message(admin_id, admin_text)
-        except Exception as admin_error:
+            await bot.send_message(admin_id, admin_text)
+        except TelegramAPIError as admin_error:
             print(f"Failed to send error notification to admin {admin_id}: {admin_error}")
 
 

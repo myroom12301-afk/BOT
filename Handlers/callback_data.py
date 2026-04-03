@@ -1,5 +1,6 @@
 
 from aiogram import F, Router
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import CallbackQuery
 
 from KB.RPKB.start_menu import start__menu
@@ -20,11 +21,15 @@ con_time = ['10:00', '12:00', '14:00', '16:00']
 router = Router()
 @router.callback_query(F.data.in_(['KY','RU','EN']), StateFilter(None))
 async def add__user(cb: CallbackQuery):
+    await cb.answer()
     user_id = cb.from_user.id
     add_user(user_id, cb.data)
-    await cb.message.edit_text(text=lange[cb.data]['select_language'], reply_markup=None)
+    try:
+        await cb.message.edit_text(text=lange[cb.data]['select_language'], reply_markup=None)
+    except TelegramBadRequest as e:
+        if "message is not modified" not in str(e):
+            raise
     await cb.message.answer(text=lange[cb.data]['menu_open'],reply_markup=start__menu(user_id))
-    await cb.answer()
 @router.callback_query(F.data=='back_')
 async def back(cb: CallbackQuery,state: FSMContext):
     user_id = cb.from_user.id

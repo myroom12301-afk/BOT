@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from aiogram import F, Router
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.types import CallbackQuery, Message
 
@@ -70,17 +71,25 @@ async def render_first_admin_page(message):
     total_count = get_active_consultations_count()
 
     if total_count == 0:
-        await message.edit_text(admin_cons_text['empty'])
+        try:
+            await message.edit_text(admin_cons_text['empty'])
+        except TelegramBadRequest as e:
+            if "message is not modified" not in str(e):
+                raise
         return
 
-    await message.edit_text(
-        admin_cons_text['list_title'].format(page=1),
-        reply_markup=build_admin_cons_list_kb(
-            bookings,
-            page=1,
-            has_next_page=total_count > PAGE_SIZE,
-        ),
-    )
+    try:
+        await message.edit_text(
+            admin_cons_text['list_title'].format(page=1),
+            reply_markup=build_admin_cons_list_kb(
+                bookings,
+                page=1,
+                has_next_page=total_count > PAGE_SIZE,
+            ),
+        )
+    except TelegramBadRequest as e:
+        if "message is not modified" not in str(e):
+            raise
 
 
 @router.message(Command('admin_cons'))
@@ -107,15 +116,23 @@ async def admin_cons_page_callback(callback: CallbackQuery):
     total_count = get_active_consultations_count()
 
     if total_count == 0:
-        await message.edit_text(admin_cons_text['empty'])
+        try:
+            await message.edit_text(admin_cons_text['empty'])
+        except TelegramBadRequest as e:
+            if "message is not modified" not in str(e):
+                raise
         await callback.answer()
         return
 
     has_next_page = total_count > page * PAGE_SIZE
-    await message.edit_text(
-        admin_cons_text['list_title'].format(page=page),
-        reply_markup=build_admin_cons_list_kb(bookings, page, has_next_page),
-    )
+    try:
+        await message.edit_text(
+            admin_cons_text['list_title'].format(page=page),
+            reply_markup=build_admin_cons_list_kb(bookings, page, has_next_page),
+        )
+    except TelegramBadRequest as e:
+        if "message is not modified" not in str(e):
+            raise
     await callback.answer()
 
 
@@ -136,10 +153,14 @@ async def admin_cons_detail_callback(callback: CallbackQuery):
         await callback.answer(admin_cons_text['booking_not_found'], show_alert=True)
         return
 
-    await message.edit_text(
-        build_card_text(booking),
-        reply_markup=build_admin_cons_card_kb(cons_id),
-    )
+    try:
+        await message.edit_text(
+            build_card_text(booking),
+            reply_markup=build_admin_cons_card_kb(cons_id),
+        )
+    except TelegramBadRequest as e:
+        if "message is not modified" not in str(e):
+            raise
     await callback.answer()
 
 

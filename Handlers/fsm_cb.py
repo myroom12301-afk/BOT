@@ -1,6 +1,7 @@
 import asyncio
 
 from aiogram import F, Router
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 
 
@@ -21,6 +22,7 @@ from utils import is_valid_phone
 con_time = ['10:00', '12:00', '14:00', '16:00']
 router = Router()
 from aiogram.types import CallbackQuery
+from aiogram.types.inaccessible_message import InaccessibleMessage
 from aiogram.fsm.context import FSMContext
 
 
@@ -35,27 +37,37 @@ def build_cons_preview(lang, data):
 
 @router.callback_query(F.data.in_(con_time))
 async def ad(cb: CallbackQuery, state: FSMContext):
+    await cb.answer()
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
     await state.update_data(meet_time=cb.data)
-    await cb.message.delete()
+    if cb.message and not isinstance(cb.message, InaccessibleMessage):
+        try:
+            await cb.message.delete()
+        except TelegramBadRequest as e:
+            if "message to delete not found" not in str(e):
+                raise
     await cb.message.answer(
         text=record_buttons[lang]['steps']['who'],
         reply_markup=inkb_who(user_id)
     )
-    await cb.answer()
 
 
 @router.callback_query(F.data.in_(["Student", "Parent"]))
 async def who_fun(cb: CallbackQuery, state: FSMContext):
+    await cb.answer()
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
 
     await state.update_data(who=cb.data)
     await state.set_state(Form.name)
-    await cb.message.delete()
+    if cb.message and not isinstance(cb.message, InaccessibleMessage):
+        try:
+            await cb.message.delete()
+        except TelegramBadRequest as e:
+            if "message to delete not found" not in str(e):
+                raise
     await cb.message.answer(text=record_buttons[lang]['steps']['name'])
-    await cb.answer()
 @router.message(Form.name)
 async def name(m: Message, state: FSMContext):
     user_id = m.from_user.id
@@ -86,18 +98,23 @@ async def phone(m: Message, state: FSMContext):
 
 @router.callback_query(F.data.startswith("date_"))
 async def process_date(cb: CallbackQuery, state: FSMContext):
+    await cb.answer()
     selected_date = cb.data.split("_")[1]
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
     data = await state.get_data()
     await state.update_data(date=selected_date)
-    await cb.message.delete()
+    if cb.message and not isinstance(cb.message, InaccessibleMessage):
+        try:
+            await cb.message.delete()
+        except TelegramBadRequest as e:
+            if "message to delete not found" not in str(e):
+                raise
     await cb.message.answer(
         text=record_buttons[lang]['steps']['time'],
         reply_markup=cons_time(user_id, selected_date, data.get('edit_cons_id'))
     )
     await state.set_state(Form.meet_time)
-    await cb.answer()
 
 @router.message(Form.conf)
 async def block_text_on_confirm(message: Message):
