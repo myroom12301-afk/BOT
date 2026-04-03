@@ -42,3 +42,33 @@ def build_admin_cons_card_kb(cons_id):
     builder.button(text=admin_cons_text['back_to_list'], callback_data='admin_cons_back')
     builder.adjust(2, 1)
     return builder.as_markup()
+
+
+def build_event_link_kb(link, button_text):
+    if not (link and button_text):
+        return None
+    builder = InlineKeyboardBuilder()
+    builder.button(text=button_text, url=link)
+    return builder.as_markup()
+
+
+def build_admin_events_list_kb(events):
+    builder = InlineKeyboardBuilder()
+    for event_id, title, event_date, *_ in events:
+        builder.button(
+            text=f"{_format_short_date(event_date)} | {title}",
+            callback_data=f"admin_event:{event_id}",
+        )
+    builder.button(text=admin_cons_text['add_event'], callback_data='admin_event_add')
+    builder.adjust(1)
+    return builder.as_markup()
+
+
+def build_admin_event_card_kb(event_id, link=None, button_text=None):
+    builder = InlineKeyboardBuilder()
+    if link and button_text:
+        builder.button(text=button_text, url=link)
+    builder.button(text=admin_cons_text['delete_event'], callback_data=f"admin_event_delete:{event_id}")
+    builder.button(text=admin_cons_text['back_to_events'], callback_data='admin_event_back')
+    builder.adjust(1)
+    return builder.as_markup()

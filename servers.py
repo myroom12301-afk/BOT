@@ -2,6 +2,24 @@ from config import conn
 from TEXT.cons_txt import fields, record_buttons
 
 
+def create_important_events_table():
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS important_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            event_date TEXT NOT NULL,
+            description TEXT,
+            link TEXT,
+            button_text TEXT,
+            is_active INTEGER DEFAULT 1
+        )
+        """
+    )
+    conn.commit()
+    cursor.close()
+
 
 def _soft_delete_slot(cursor, user_id, slot_date, slot_time):
     # Preserve history by soft-deleting active slots.
@@ -82,6 +100,7 @@ def init_db():
 
     conn.commit()
     cursor.close()
+    create_important_events_table()
 
 
 def get_active_times(slot_date, excluded_cons_id=None):
@@ -317,6 +336,66 @@ def update_consultation_status(cons_id, status):
         WHERE id = ? AND status = 'active'
         """,
         (status, cons_id),
+    )
+    updated = cursor.rowcount > 0
+    conn.commit()
+    cursor.close()
+    return updated
+
+
+def add_important_event(title, event_date, description, link=None, button_text=None):
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO important_events (title, event_date, description, link, button_text)
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        (title, event_date, description, link, button_text),
+    )
+    conn.commit()
+    cursor.close()
+
+
+def get_active_important_events():
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT id, title, event_date, description, link, button_text, is_active
+        FROM important_events
+        WHERE is_active = 1
+        ORDER BY event_date ASC, id ASC
+        """
+    )
+    rows = cursor.fetchall()
+    cursor.close()
+    return rows
+
+
+def get_important_event_by_id(event_id):
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT id, title, event_date, description, link, button_text, is_active
+        FROM important_events
+        WHERE id = ?
+        LIMIT 1
+        """,
+        (event_id,),
+    )
+    row = cursor.fetchone()
+    cursor.close()
+    return row
+
+
+def deactivate_important_event(event_id):
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        UPDATE important_events
+        SET is_active = 0
+        WHERE id = ? AND is_active = 1
+        """,
+        (event_id,),
     )
     updated = cursor.rowcount > 0
     conn.commit()

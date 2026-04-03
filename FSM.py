@@ -7,3 +7,8 @@ class Form(StatesGroup):
     name = State()
     number = State()
     conf = State()
+    event_title = State()
+    event_date = State()
+    event_description = State()
+    event_link = State()
+    event_button_text = State()

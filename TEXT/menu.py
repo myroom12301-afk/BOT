@@ -2,6 +2,7 @@ start_menu_txt = {
     'RU': {
         'info': '📘 О колледже',
         'cons': '🏫 Консультация',
+        'events': '📅 Важные события',
         'admis': '🎓 Поступление',
         'contacts': '📞 Контакты',
         'FAQ': '❓ FAQ',
@@ -10,6 +11,7 @@ start_menu_txt = {
     'EN': {
         'info': '📘 About College',
         'cons': '🏫 Consultation',
+        'events': '📅 Important Events',
         'admis': '🎓 Admission',
         'contacts': '📞 Contacts',
         'FAQ': '❓ FAQ',
@@ -18,6 +20,7 @@ start_menu_txt = {
     'KY': {
         'info': '📘 Колледж жөнүндө',
         'cons': '🏫 Кеңеш берүү',
+        'events': '📅 Маанилүү окуялар',
         'admis': '🎓 Кабыл алуу',
         'contacts': '📞 Байланыштар',
         'FAQ': '❓ FAQ',
@@ -36,6 +39,11 @@ start_menu_code = {
         'RU': '🏫 Консультация',
         'EN': '🏫 Consultation',
         'KY': '🏫 Кеңеш берүү'
+    },
+    'events': {
+        'RU': '📅 Важные события',
+        'EN': '📅 Important Events',
+        'KY': '📅 Маанилүү окуялар'
     },
     'admis': {
         'RU': '🎓 Поступление',
@@ -63,5 +71,4 @@ start_menu_code = {
         'KY': '🌐 Тилди өзгөртүү'
     }
 }
-
 

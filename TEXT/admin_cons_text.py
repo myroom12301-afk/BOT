@@ -20,6 +20,20 @@ admin_cons_text = {
     'date': 'Date',
     'time': 'Time',
     'status': 'Status',
+    'events_title': 'Active important events:',
+    'events_empty': 'No active important events',
+    'add_event': '➕ Добавить событие',
+    'delete_event': '🗑 Удалить',
+    'back_to_events': 'Back to events',
+    'event_not_found': 'Event not found',
+    'event_deleted': 'Event deleted',
+    'event_added': 'Событие добавлено',
+    'event_title_step': 'Введите title события',
+    'event_date_step': 'Введите event_date в формате YYYY-MM-DD',
+    'event_date_error': 'Нужен формат даты YYYY-MM-DD',
+    'event_description_step': 'Введите description события',
+    'event_link_step': 'Введите link или /skip',
+    'event_button_text_step': 'Введите button_text или /skip',
 }
 
 

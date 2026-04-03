@@ -7,6 +7,7 @@ def start__menu(user_id):
     buttons_texts = [
         'info',
         'cons',
+        'events',
         'admis',
         'contacts',
         'FAQ',
