@@ -218,3 +218,7 @@ __marimo__/
 .streamlit/secrets.toml
 
 users_data.db
+__pycache__/
+*.pyc
+.venv/
+venv/
