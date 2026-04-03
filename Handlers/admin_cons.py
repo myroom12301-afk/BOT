@@ -179,9 +179,13 @@ async def admin_cons_done_callback(callback: CallbackQuery):
         await callback.answer(admin_cons_text['booking_not_active'], show_alert=True)
         await render_first_admin_page(message)
         return
+    from aiogram.exceptions import TelegramBadRequest, TelegramForbiddenError
 
-    user_lang = get_user_language(booking[3]) or 'RU'
-    await callback.bot.send_message(booking[3], booking_confirmed_user_text[user_lang])
+    try:
+        user_lang = get_user_language(booking[3]) or 'RU'
+        await callback.bot.send_message(booking[3], booking_confirmed_user_text[user_lang])
+    except (TelegramForbiddenError, TelegramBadRequest) as e:
+        print(f"Failed to send confirmation to user {booking[3]}: {e}")
     await render_first_admin_page(message)
     await callback.answer(admin_cons_text['booking_confirmed'])
 

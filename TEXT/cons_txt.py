@@ -30,7 +30,6 @@ record_buttons = {
                 'Неверный формат номера\n\n'
                 'Введите номер в одном из форматов:\n'
                 '0XXXXXXXXX\n'
-                '0XXX-XXX-XXX\n'
                 '0XXX XXX XXX'
             ),
             'data': 'Выберите дату:',
@@ -74,7 +73,6 @@ record_buttons = {
                 'Телефон номери туура эмес\n\n'
                 'Төмөнкү форматтардын бирин колдонуңуз:\n'
                 '0XXXXXXXXX\n'
-                '0XXX-XXX-XXX\n'
                 '0XXX XXX XXX'
             ),
             'data': 'Күндү тандаңыз:',
@@ -119,7 +117,6 @@ record_buttons = {
                 'Invalid phone number format\n\n'
                 'Please use one of the following formats:\n'
                 '0XXXXXXXXX\n'
-                '0XXX-XXX-XXX\n'
                 '0XXX XXX XXX'
             ),
 'data': 'Choose a date:',
