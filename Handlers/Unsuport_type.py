@@ -1,4 +1,5 @@
 from aiogram import Router, F
+from aiogram.fsm.scene import StateFilter
 from aiogram.types import Message
 from aiogram.enums import ContentType
 from servers import get_user_language
@@ -26,7 +27,7 @@ UNSUPPORTED_TYPES = [
     ContentType.DICE,
 ]
 
-@router.message(F.content_type.in_(UNSUPPORTED_TYPES))
+@router.message(F.content_type.in_(UNSUPPORTED_TYPES), StateFilter(None))
 async def unsupported_content_handler(message: Message):
     lang = get_user_language(message.from_user.id)
     await message.answer(unsupported_content_text.get(lang, unsupported_content_text["RU"]))

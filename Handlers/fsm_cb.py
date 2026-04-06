@@ -2,6 +2,7 @@ import asyncio
 
 from aiogram import F, Router
 from aiogram.exceptions import TelegramBadRequest
+from aiogram.filters import StateFilter
 from aiogram.types import Message
 
 
@@ -20,6 +21,13 @@ from utils import is_valid_phone
 
 
 con_time = ['10:00', '12:00', '14:00', '16:00']
+CONSULTATION_STATES = (
+    Form.date,
+    Form.meet_time,
+    Form.name,
+    Form.number,
+    Form.conf,
+)
 router = Router()
 from aiogram.types import CallbackQuery
 from aiogram.types.inaccessible_message import InaccessibleMessage
@@ -168,3 +176,14 @@ async def confirm(cb: CallbackQuery, state: FSMContext):
     await state.clear()
 
     await cb.answer()
+
+
+@router.message(StateFilter(Form.date, Form.meet_time))
+async def ignore_text_during_consultation_choice(message: Message):
+    # While the user is expected to press inline buttons, free text should not leak to other routers.
+    return
+
+
+@router.callback_query(StateFilter(*CONSULTATION_STATES))
+async def ignore_foreign_callbacks_during_consultation(callback: CallbackQuery):
+    await callback.answer()

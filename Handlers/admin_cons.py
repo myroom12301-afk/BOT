@@ -2,7 +2,7 @@ from datetime import datetime
 
 from aiogram import F, Router
 from aiogram.exceptions import TelegramBadRequest, TelegramForbiddenError
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
@@ -33,6 +33,14 @@ from utils import build_event_text
 
 router = Router()
 PAGE_SIZE = 5
+ADMIN_EVENT_STATES = (
+    Form.event_title,
+    Form.event_date,
+    Form.event_description,
+    Form.event_link,
+    Form.event_button_text,
+    Form.event_confirm,
+)
 
 
 def is_admin(user_id):
@@ -383,17 +391,22 @@ async def admin_event_publish_callback(callback: CallbackQuery, state: FSMContex
     if message is None:
         return
 
+    current_state = await state.get_state()
     data = await state.get_data()
+    required_fields = ('title', 'event_date', 'description')
+    if current_state != Form.event_confirm.state or any(not data.get(field) for field in required_fields):
+        await callback.answer("Кнопка уже неактуальна", show_alert=True)
+        return
     add_important_event(
-        data['title'],
-        data['event_date'],
-        data['description'],
+        data.get('title'),
+        data.get('event_date'),
+        data.get('description'),
         data.get('link'),
         data.get('button_text'),
     )
     await state.clear()
     await message.answer(admin_cons_text['event_added'])
-    await notify_users_about_important_event(callback.bot, data['title'], data.get('event_date'))
+    await notify_users_about_important_event(callback.bot, data.get('title'), data.get('event_date'))
     await send_admin_events_list(message)
     await callback.answer()
 
@@ -485,3 +498,8 @@ async def admin_event_delete_callback(callback: CallbackQuery):
 
     await send_admin_events_list(message, edit=True)
     await callback.answer(admin_cons_text['event_deleted'])
+
+
+@router.callback_query(StateFilter(*ADMIN_EVENT_STATES))
+async def ignore_foreign_callbacks_during_admin_event(callback: CallbackQuery):
+    await callback.answer()
