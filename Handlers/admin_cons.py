@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from aiogram import F, Router
-from aiogram.exceptions import TelegramBadRequest
+from aiogram.exceptions import TelegramBadRequest, TelegramForbiddenError
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
@@ -9,6 +9,7 @@ from aiogram.types import CallbackQuery, Message
 from FSM import Form
 from KB.INKB.admin_cons import (
     build_admin_cons_card_kb,
+    build_admin_event_confirm_kb,
     build_admin_cons_list_kb,
     build_admin_event_card_kb,
     build_admin_events_list_kb,
@@ -24,6 +25,7 @@ from servers import (
     get_active_important_events,
     get_consultation_by_id,
     get_important_event_by_id,
+    get_unique_user_ids,
     get_user_language,
     update_consultation_status,
 )
@@ -78,6 +80,40 @@ async def send_admin_events_list(target, edit=False):
                 raise
         return
     await target.answer(text, reply_markup=reply_markup)
+
+
+async def notify_users_about_important_event(bot, title, event_date=None):
+    for user_id in get_unique_user_ids():
+        lang = get_user_language(user_id) or 'RU'
+        text = f"{events_txt[lang]['notification_title']}\n\n{title}"
+        if event_date:
+            text += f"\n{events_txt[lang]['event_date']}: {format_full_date(event_date)}"
+        text += f"\n\n{events_txt[lang]['notification_open']}"
+        try:
+            await bot.send_message(user_id, text)
+        except TelegramForbiddenError:
+            pass
+        except TelegramBadRequest:
+            pass
+        except Exception:
+            pass
+
+
+async def send_event_publish_preview(message: Message, state: FSMContext):
+    data = await state.get_data()
+    preview_event = (
+        0,
+        data['title'],
+        data['event_date'],
+        data['description'],
+        data.get('link'),
+        data.get('button_text'),
+        1,
+    )
+    await message.answer(
+        f"{admin_cons_text['event_confirm_step']}\n\n{build_event_text('RU', preview_event, events_txt)}",
+        reply_markup=build_admin_event_confirm_kb(),
+    )
 
 
 def build_card_text(booking):
@@ -325,26 +361,57 @@ async def admin_event_link_step(message: Message, state: FSMContext):
 
 @router.message(Form.event_button_text, Command('skip'))
 async def admin_event_skip_button_text(message: Message, state: FSMContext):
-    data = await state.get_data()
-    add_important_event(data['title'], data['event_date'], data['description'], data.get('link'), None)
-    await state.clear()
-    await message.answer(admin_cons_text['event_added'])
-    await send_admin_events_list(message)
+    await state.update_data(button_text=None)
+    await state.set_state(Form.event_confirm)
+    await send_event_publish_preview(message, state)
 
 
 @router.message(Form.event_button_text)
 async def admin_event_button_text_step(message: Message, state: FSMContext):
+    await state.update_data(button_text=message.text.strip() if (await state.get_data()).get('link') else None)
+    await state.set_state(Form.event_confirm)
+    await send_event_publish_preview(message, state)
+
+
+@router.callback_query(F.data == 'admin_event_publish')
+async def admin_event_publish_callback(callback: CallbackQuery, state: FSMContext):
+    if not is_admin(callback.from_user.id):
+        await callback.answer(admin_cons_text['access_denied'], show_alert=True)
+        return
+
+    message = await get_callback_message(callback)
+    if message is None:
+        return
+
     data = await state.get_data()
     add_important_event(
         data['title'],
         data['event_date'],
         data['description'],
         data.get('link'),
-        message.text.strip() if data.get('link') else None,
+        data.get('button_text'),
     )
     await state.clear()
     await message.answer(admin_cons_text['event_added'])
+    await notify_users_about_important_event(callback.bot, data['title'], data.get('event_date'))
     await send_admin_events_list(message)
+    await callback.answer()
+
+
+@router.callback_query(F.data == 'admin_event_cancel')
+async def admin_event_cancel_callback(callback: CallbackQuery, state: FSMContext):
+    if not is_admin(callback.from_user.id):
+        await callback.answer(admin_cons_text['access_denied'], show_alert=True)
+        return
+
+    message = await get_callback_message(callback)
+    if message is None:
+        return
+
+    await state.clear()
+    await message.answer(admin_cons_text['event_publish_canceled'])
+    await send_admin_events_list(message)
+    await callback.answer()
 
 
 @router.callback_query(F.data.startswith('admin_cons_done:'))
@@ -369,8 +436,6 @@ async def admin_cons_done_callback(callback: CallbackQuery):
         await callback.answer(admin_cons_text['booking_not_active'], show_alert=True)
         await render_first_admin_page(message)
         return
-    from aiogram.exceptions import TelegramBadRequest, TelegramForbiddenError
-
     try:
         user_lang = get_user_language(booking[3]) or 'RU'
         await callback.bot.send_message(booking[3], booking_confirmed_user_text[user_lang])

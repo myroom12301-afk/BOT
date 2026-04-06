@@ -52,6 +52,34 @@ def build_event_link_kb(link, button_text):
     return builder.as_markup()
 
 
+def build_user_events_list_kb(events):
+    builder = InlineKeyboardBuilder()
+    for event_id, title, event_date, *_ in events:
+        builder.button(
+            text=f"{_format_short_date(event_date)} | {title}",
+            callback_data=f"important_event:{event_id}",
+        )
+    builder.adjust(1)
+    return builder.as_markup()
+
+
+def build_user_event_card_kb(event_id, link=None, button_text=None):
+    builder = InlineKeyboardBuilder()
+    if link and button_text:
+        builder.button(text=button_text, url=link)
+    builder.button(text='🔙', callback_data='important_events')
+    builder.adjust(1)
+    return builder.as_markup()
+
+
+def build_admin_event_confirm_kb():
+    builder = InlineKeyboardBuilder()
+    builder.button(text=admin_cons_text['event_publish'], callback_data='admin_event_publish')
+    builder.button(text=admin_cons_text['event_cancel'], callback_data='admin_event_cancel')
+    builder.adjust(1)
+    return builder.as_markup()
+
+
 def build_admin_events_list_kb(events):
     builder = InlineKeyboardBuilder()
     for event_id, title, event_date, *_ in events:

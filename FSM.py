@@ -12,3 +12,4 @@ class Form(StatesGroup):
     event_description = State()
     event_link = State()
     event_button_text = State()
+    event_confirm = State()

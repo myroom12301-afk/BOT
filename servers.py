@@ -356,6 +356,20 @@ def add_important_event(title, event_date, description, link=None, button_text=N
     cursor.close()
 
 
+def get_unique_user_ids():
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT DISTINCT user_id
+        FROM users_data
+        WHERE user_id IS NOT NULL
+        """
+    )
+    rows = cursor.fetchall()
+    cursor.close()
+    return [row[0] for row in rows]
+
+
 def get_active_important_events():
     cursor = conn.cursor()
     cursor.execute(

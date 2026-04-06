@@ -34,6 +34,10 @@ admin_cons_text = {
     'event_description_step': 'Введите description события',
     'event_link_step': 'Введите link или /skip',
     'event_button_text_step': 'Введите button_text или /skip',
+    'event_confirm_step': 'Проверьте событие перед публикацией',
+    'event_publish': '✅ Опубликовать',
+    'event_cancel': '❌ Отмена',
+    'event_publish_canceled': 'Публикация события отменена',
 }
 
 
