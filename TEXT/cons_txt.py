@@ -2,130 +2,129 @@ record_buttons = {
     'RU': {
         'sign_up': {
             'sign': '🕐 Записаться',
-            'frs_m': 'Начнём запись на консультацию 👇',
-            'edit_frs_m': 'Изменим вашу запись на консультацию 👇',
-            'already_have': 'У вас уже есть активная запись. Управлять ею можно в разделе «Ваша запись».'
+            'frs_m': 'Для записи на консультацию, пожалуйста, последовательно заполните данные ниже.',
+            'edit_frs_m': 'Для изменения записи, пожалуйста, последовательно обновите данные ниже.',
+            'already_have': 'У вас уже есть активная запись на консультацию. Вы можете просмотреть или изменить её в разделе «Ваша запись».'
         },
         'view_records': {
             'sign': '📋 Ваша запись',
-            'frs_m': 'Информация о вашей записи',
-'no_record': '❌ У вас нет активной записи'
+            'frs_m': 'Информация о вашей текущей записи на консультацию.',
+            'no_record': 'У вас нет активной записи на консультацию.'
         },
         'back': {
             'sign': '🔙 Назад',
-            'frs_m': 'Возврат в предыдущее меню',
+            'frs_m': 'Вы возвращены в предыдущее меню.',
             'main': '🏠 Главное меню'
         },
 
         'steps': {
-            'time': 'Выберите удобное время для консультации',
-            'who': 'Укажите, кто вы:',
-            'name': 'Введите ваше имя',
+            'time': 'Пожалуйста, выберите удобное время для консультации.',
+            'who': 'Пожалуйста, укажите, кем вы являетесь.',
+            'name': 'Пожалуйста, введите ваше имя.',
 
             'phone': (
-                'Введите номер телефона'
+                'Пожалуйста, введите ваш номер телефона.'
             ),
 
             'phone_error': (
-                'Неверный формат номера\n\n'
-                'Введите номер в одном из форматов:\n'
+                'Номер телефона указан в неверном формате.\n\n'
+                'Пожалуйста, используйте один из следующих форматов:\n'
                 '0XXXXXXXXX\n'
                 '0XXX XXX XXX'
             ),
-            'data': 'Выберите дату:',
+            'data': 'Пожалуйста, выберите дату консультации.',
 
-            'confirm': 'Проверьте данные и подтвердите запись:',
-            'success': 'Вы успешно записались на консультацию!\n\nЕсли возникли вопросы, можете позвонить в колледж, а также оставить отзыв о работе бота.',
-            'edit_success': 'Ваша запись успешно изменена!\n\nЕсли возникли вопросы, можете позвонить в колледж, а также оставить отзыв о работе бота.',
-            'slot_taken': 'Это время уже занято. Пожалуйста, выберите другое.',
-            'confirm_pointer': '👆🏻'
+            'confirm': 'Проверьте введённые данные и подтвердите запись.',
+            'success': 'Вы успешно записаны на консультацию.\n\nЕсли у вас возникнут дополнительные вопросы, пожалуйста, свяжитесь с колледжем.',
+            'edit_success': 'Ваша запись на консультацию успешно обновлена.\n\nЕсли у вас возникнут дополнительные вопросы, пожалуйста, свяжитесь с колледжем.',
+            'slot_taken': 'Выбранное время уже занято. Пожалуйста, выберите другой доступный вариант.',
+            'confirm_pointer': 'Пожалуйста, используйте кнопки ниже для подтверждения записи.'
         }
     },
 
     'KY': {
         'sign_up': {
             'sign': '🕐 Катталуу',
-            'frs_m': 'Консультацияга жазылууну баштайлы 👇',
-            'edit_frs_m': 'Жазууңузду өзгөртөлү 👇',
-            'already_have': 'Сизде активдүү жазуу бар. Аны «Сиздин жазууңуз» бөлүмүнөн башкара аласыз.'
+            'frs_m': 'Консультацияга жазылуу үчүн төмөндөгү маалыматтарды ирети менен толтуруңуз.',
+            'edit_frs_m': 'Жазууңузду өзгөртүү үчүн төмөндөгү маалыматтарды жаңыртыңыз.',
+            'already_have': 'Сизде консультацияга активдүү жазылуу бар. Аны «Сиздин жазууңуз» бөлүмүнөн көрүп же өзгөртө аласыз.'
         },
         'view_records': {
             'sign': '📋 Сиздин жазууңуз',
-            'frs_m': 'Сиздин жазуу тууралуу маалымат',
-'no_record': '❌ Сизде активдүү жазуу жок'
+            'frs_m': 'Консультацияга учурдагы жазууңуз тууралуу маалымат.',
+            'no_record': 'Сизде консультацияга активдүү жазуу жок.'
         },
         'back': {
             'sign': '🔙 Артка',
-            'frs_m': 'Мурунку менюга кайтуу',
+            'frs_m': 'Сиз мурунку менюга кайтарылдыңыз.',
             'main': '🏠 Башкы меню'
         },
 
         'steps': {
-            'time': '🕒 Консультация үчүн ыңгайлуу убакытты тандаңыз',
-            'who': 'Сиз кимсиз?',
-            'name': '️Атыңызды жазыңыз',
+            'time': 'Сураныч, консультация үчүн ыңгайлуу убакытты тандаңыз.',
+            'who': 'Сураныч, өзүңүз тууралуу ылайыктуу вариантты тандаңыз.',
+            'name': 'Сураныч, атыңызды жазыңыз.',
 
             'phone': (
-                'Телефон номериңизди жазыңыз'
+                'Сураныч, телефон номериңизди жазыңыз.'
             ),
 
             'phone_error': (
-                'Телефон номери туура эмес\n\n'
-                'Төмөнкү форматтардын бирин колдонуңуз:\n'
+                'Телефон номери туура эмес форматта көрсөтүлдү.\n\n'
+                'Сураныч, төмөнкү форматтардын бирин колдонуңуз:\n'
                 '0XXXXXXXXX\n'
                 '0XXX XXX XXX'
             ),
-            'data': 'Күндү тандаңыз:',
+            'data': 'Сураныч, консультациянын күнүн тандаңыз.',
 
-            'confirm': 'Маалыматтарды текшерип, ырастагыла',
-            'success': 'Сиз консультацияга ийгиликтүү катталдыңыз!\n\nЭгер суроолоруңуз болсо, колледжге чалсаңыз болот, ошондой эле боттун иши боюнча пикир калтырсаңыз болот.',
-            'edit_success': 'Жазууңуз ийгиликтүү өзгөртүлдү!\n\nЭгер суроолоруңуз болсо, колледжге чалсаңыз болот, ошондой эле боттун иши боюнча пикир калтырсаңыз болот.',
-            'slot_taken': 'Бул убакыт бош эмес. Башка убакытты тандаңыз.',
-            'confirm_pointer': '👆🏻'
+            'confirm': 'Киргизилген маалыматтарды текшерип, жазууну ырастаңыз.',
+            'success': 'Сиз консультацияга ийгиликтүү жазылдыңыз.\n\nКошумча суроолоруңуз болсо, колледж менен байланышыңыз.',
+            'edit_success': 'Консультацияга болгон жазууңуз ийгиликтүү жаңыртылды.\n\nКошумча суроолоруңуз болсо, колледж менен байланышыңыз.',
+            'slot_taken': 'Тандалган убакыт бош эмес. Сураныч, башка жеткиликтүү убакытты тандаңыз.',
+            'confirm_pointer': 'Жазууну ырастоо үчүн төмөнкү баскычтарды колдонуңуз.'
         }
     },
 
     'EN': {
         'sign_up': {
             'sign': '🕐 Sign Up',
-            'frs_m': "Let's start scheduling your consultation 👇"
-            ,
-            'edit_frs_m': "Let's update your consultation booking 👇",
-            'already_have': 'You already have an active booking. You can manage it in “Your booking”.'
+            'frs_m': 'To book a consultation, please complete the details below step by step.',
+            'edit_frs_m': 'To update your consultation booking, please revise the details below.',
+            'already_have': 'You already have an active consultation booking. You can view or manage it in “Your Booking”.'
         },
         'view_records': {
-            'sign': '📋 Your Record',
-            'frs_m': 'Information about your record',
-            'no_record': '❌ You do not have an active record'
+            'sign': '📋 Your Booking',
+            'frs_m': 'Information about your current consultation booking.',
+            'no_record': 'You do not have an active consultation booking.'
         },
         'back': {
             'sign': '🔙 Back',
-            'frs_m': 'Return to the previous menu',
+            'frs_m': 'You have been returned to the previous menu.',
             'main': '🏠 Main Menu'
         },
 
         'steps': {
-            'time': 'Choose a convenient time for the consultation',
-            'who': 'Who are you?',
-            'name': 'Enter your name',
+            'time': 'Please choose a convenient time for the consultation.',
+            'who': 'Please indicate who you are.',
+            'name': 'Please enter your name.',
 
             'phone': (
-                'Enter your phone number'
+                'Please enter your phone number.'
             ),
 
             'phone_error': (
-                'Invalid phone number format\n\n'
+                'The phone number format is invalid.\n\n'
                 'Please use one of the following formats:\n'
                 '0XXXXXXXXX\n'
                 '0XXX XXX XXX'
             ),
-'data': 'Choose a date:',
+            'data': 'Please choose a consultation date.',
 
-            'confirm': 'Please check the data and confirm',
-            'success': 'You have successfully signed up for a consultation!\n\nIf you have any questions, you can call the college and also leave feedback about the bot.',
-            'edit_success': 'Your booking has been updated successfully!\n\nIf you have any questions, you can call the college and also leave feedback about the bot.',
-            'slot_taken': 'This time is already booked. Please choose another one.',
-            'confirm_pointer': '👆🏻'
+            'confirm': 'Please review the entered details and confirm your booking.',
+            'success': 'Your consultation booking has been successfully created.\n\nIf you have any additional questions, please contact the college.',
+            'edit_success': 'Your consultation booking has been successfully updated.\n\nIf you have any additional questions, please contact the college.',
+            'slot_taken': 'The selected time is no longer available. Please choose another option.',
+            'confirm_pointer': 'Please use the buttons below to confirm your booking.'
         }
     }
 }

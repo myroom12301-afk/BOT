@@ -1,14 +1,14 @@
 lange = {
     'RU': {
-        'select_language': 'Язык выбран: Русский',
-        'menu_open': 'Открыто меню'
+        'select_language': 'Язык интерфейса успешно выбран: Русский.',
+        'menu_open': 'Главное меню открыто.'
     },
     'KY': {
-        'select_language': 'Тил тандалды: Кыргызча',
-        'menu_open': 'Меню ачык'
+        'select_language': 'Интерфейс тили ийгиликтүү тандалды: Кыргызча.',
+        'menu_open': 'Башкы меню ачылды.'
     },
     'EN': {
-        'select_language': 'Language selected: English',
-        'menu_open': 'Menu opened'
+        'select_language': 'Interface language selected successfully: English.',
+        'menu_open': 'The main menu is now open.'
     }
 }

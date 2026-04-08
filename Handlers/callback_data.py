@@ -19,6 +19,16 @@ from servers import del_cons, get_user_active_booking
 from aiogram.fsm.context import FSMContext
 con_time = ['10:00', '12:00', '14:00', '16:00']
 router = Router()
+
+
+async def _safe_delete(message):
+    try:
+        await message.delete()
+    except TelegramBadRequest as e:
+        if "message to delete not found" not in str(e):
+            raise
+
+
 @router.callback_query(F.data.in_(['KY','RU','EN']), StateFilter(None))
 async def add__user(cb: CallbackQuery):
     await cb.answer()
@@ -34,7 +44,7 @@ async def add__user(cb: CallbackQuery):
 async def back(cb: CallbackQuery,state: FSMContext):
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
-    await cb.message.delete()
+    await _safe_delete(cb.message)
     await state.clear()
     await cb.message.answer(
         text=record_buttons[lang]['back']['frs_m'],
@@ -47,7 +57,7 @@ async def back(cb: CallbackQuery,state: FSMContext):
 async def back_main(cb: CallbackQuery, state: FSMContext):
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
-    await cb.message.delete()
+    await _safe_delete(cb.message)
     await state.clear()
     await cb.message.answer(
         text=record_buttons[lang]['back']['frs_m'],
@@ -60,7 +70,7 @@ async def del_cone(cb: CallbackQuery):
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
     deleted = del_cons(user_id)
-    await cb.message.delete()
+    await _safe_delete(cb.message)
     if deleted:
         await cb.message.answer(text=delete_record_txt[lang]['success_msg'])
     else:
@@ -78,7 +88,7 @@ async def edit_cons(cb: CallbackQuery, state: FSMContext):
         await cb.answer(delete_record_txt[lang]['edit_unavailable'], show_alert=True)
         return
 
-    await cb.message.delete()
+    await _safe_delete(cb.message)
     await state.clear()
     await state.update_data(edit_cons_id=booking[0])
     await cb.message.answer(text=record_buttons[lang]['sign_up']['edit_frs_m'])

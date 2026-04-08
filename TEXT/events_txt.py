@@ -1,29 +1,29 @@
 events_txt = {
     'RU': {
         'menu': '📅 Важные события',
-        'title': 'Важные события:',
-        'empty': 'Сейчас активных событий нет.',
+        'title': 'Актуальные важные события:',
+        'empty': 'В настоящее время активных важных событий нет.',
         'event_date': 'Дата',
         'description': 'Описание',
-        'notification_title': '📢 Новое важное событие!',
-        'notification_open': 'Открой раздел «Важные события» для подробностей.',
+        'notification_title': '📢 Добавлено новое важное событие',
+        'notification_open': 'Перейдите в раздел «Важные события», чтобы ознакомиться с подробной информацией.'
     },
     'EN': {
         'menu': '📅 Important Events',
-        'title': 'Important events:',
-        'empty': 'There are no active events right now.',
+        'title': 'Current important events:',
+        'empty': 'There are currently no active important events.',
         'event_date': 'Date',
         'description': 'Description',
-        'notification_title': '📢 New important event!',
-        'notification_open': 'Open the “Important Events” section for details.',
+        'notification_title': '📢 A new important event has been added',
+        'notification_open': 'Open the “Important Events” section to view the full details.'
     },
     'KY': {
         'menu': '📅 Маанилүү окуялар',
-        'title': 'Маанилүү окуялар:',
-        'empty': 'Азыр активдүү окуялар жок.',
+        'title': 'Учурдагы маанилүү окуялар:',
+        'empty': 'Учурда активдүү маанилүү окуялар жок.',
         'event_date': 'Дата',
         'description': 'Сыпаттама',
-        'notification_title': '📢 Жаңы маанилүү окуя!',
-        'notification_open': 'Толук маалымат үчүн «Маанилүү окуялар» бөлүмүн ачыңыз.',
-    },
+        'notification_title': '📢 Жаңы маанилүү окуя кошулду',
+        'notification_open': 'Толук маалымат алуу үчүн «Маанилүү окуялар» бөлүмүн ачыңыз.'
+    }
 }

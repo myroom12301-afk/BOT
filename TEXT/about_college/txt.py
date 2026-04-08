@@ -6,7 +6,7 @@ college_menu_info = {
             'photo': 'images/general_ru.jpg'
         },
         '🎓 Специальности': {
-            'text': '🎓 Специальности: описание всех направлений и программ.',
+            'text': '«Специальности»\n\nКолледж предлагает актуальные направления обучения в области информационных технологий, бизнеса и дизайна. Выберите интересующее направление, чтобы подробнее ознакомиться со специальностями.',
             'photo': 'images/specialties_ru.jpg'
         },
         '🧑‍🎓 Жизнь': {
@@ -29,7 +29,7 @@ college_menu_info = {
             'photo': 'images/general_en.jpg'
         },
         '🎓 Specialties': {
-            'text': '🎓 Specialties: description of all programs and directions.',
+            'text': '“Specialties”\n\nThe college offers relevant fields of study in information technology, business, and design. Choose the area you are interested in to learn more about the specialties.',
             'photo': 'images/specialties_en.jpg'
         },
         '🧑‍🎓 Life': {
@@ -52,7 +52,7 @@ college_menu_info = {
             'photo': 'images/general_ky.jpg'
         },
         '🎓 Адистиктер': {
-            'text': '🎓 Адистиктер: бардык программалар жана багыттар жөнүндө маалымат.',
+            'text': '«Адистиктер»\n\nКолледж маалыматтык технологиялар, бизнес жана дизайн тармагындагы актуалдуу окуу багыттарын сунуштайт. Адистиктер тууралуу кененирээк маалымат алуу үчүн кызыккан багытты тандаңыз.',
             'photo': 'images/specialties_ky.jpg'
         },
         '🧑‍🎓 Жашоо': {
@@ -70,6 +70,45 @@ college_menu_info = {
     }
 }
 
-back = {'RU': 'МЕНЮ открыто',
-        'KY': 'меню ачык',
-         'EN': 'menu opened'}
+specialties_text = {
+    'RU': {
+        'main': '«Специальности»\n\nКолледж предлагает актуальные направления обучения в области информационных технологий, бизнеса и дизайна. Выберите интересующее направление, чтобы подробнее ознакомиться со специальностями.',
+        'it': '«IT-направления»\n\nIT-направления подойдут тем, кто хочет изучать современные технологии, работать с программированием, цифровыми системами и безопасностью данных.\n\nВ рамках IT-направления доступны следующие специальности:\n\n• Программная инженерия и искусственный интеллект (ИИ)\n\n• Кибербезопасность\n\n• DevOps — автоматизация разработки и эксплуатации',
+        'business': '«Направления бизнеса»\n\nБизнес-направления подойдут тем, кто интересуется управлением, финансами, продвижением и развитием современных проектов и компаний.\n\nВ рамках бизнес-направления доступны следующие специальности:\n\n• Финансы\n\n• Менеджмент\n\n• Маркетинг',
+        'design': '«Дизайн»\n\nНаправление дизайна подойдёт тем, кто хочет развивать креативное мышление, работать с визуальной подачей и создавать современный графический контент.\n\nВ направлении дизайна доступна следующая специальность:\n\n• Графический дизайн',
+        'buttons': {
+            'it': '💻 IT-направления',
+            'business': '💼 Направления бизнеса',
+            'design': '🎨 Дизайн',
+            'back': '🔙 Назад'
+        }
+    },
+    'EN': {
+        'main': '“Specialties”\n\nThe college offers relevant fields of study in information technology, business, and design. Choose the area you are interested in to learn more about the specialties.',
+        'it': '“IT Fields”\n\nIT fields are suitable for those who want to study modern technologies, work with programming, digital systems, and data security.\n\nWithin the IT field, the following specialties are available:\n\n• Software Engineering and Artificial Intelligence (AI)\n\n• Cybersecurity\n\n• DevOps — development and operations automation',
+        'business': '“Business Fields”\n\nBusiness fields are suitable for those who are interested in management, finance, promotion, and the development of modern projects and companies.\n\nWithin the business field, the following specialties are available:\n\n• Finance\n\n• Management\n\n• Marketing',
+        'design': '“Design”\n\nThe design field is suitable for those who want to develop creative thinking, work with visual presentation, and create modern graphic content.\n\nThe following specialty is available in the design field:\n\n• Graphic Design',
+        'buttons': {
+            'it': '💻 IT Fields',
+            'business': '💼 Business Fields',
+            'design': '🎨 Design',
+            'back': '🔙 Back'
+        }
+    },
+    'KY': {
+        'main': '«Адистиктер»\n\nКолледж маалыматтык технологиялар, бизнес жана дизайн тармагындагы актуалдуу окуу багыттарын сунуштайт. Адистиктер тууралуу кененирээк маалымат алуу үчүн кызыккан багытты тандаңыз.',
+        'it': '«IT-багыттар»\n\nIT-багыттар заманбап технологияларды үйрөнүүнү, программалоо, санариптик системалар жана маалымат коопсуздугу менен иштөөнү каалагандар үчүн ылайыктуу.\n\nIT-багытынын алкагында төмөнкү адистиктер жеткиликтүү:\n\n• Программалык инженерия жана жасалма интеллект (ЖИ)\n\n• Киберкоопсуздук\n\n• DevOps — иштеп чыгууну жана эксплуатацияны автоматташтыруу',
+        'business': '«Бизнес-багыттар»\n\nБизнес-багыттар башкарууга, каржыга, илгерилетүүгө жана заманбап долбоорлор менен компанияларды өнүктүрүүгө кызыккандар үчүн ылайыктуу.\n\nБизнес-багытынын алкагында төмөнкү адистиктер жеткиликтүү:\n\n• Финансы\n\n• Менеджмент\n\n• Маркетинг',
+        'design': '«Дизайн»\n\nДизайн багыты креативдүү ой жүгүртүүнү өнүктүрүүнү, визуалдык берүү менен иштөөнү жана заманбап графикалык контент түзүүнү каалагандар үчүн ылайыктуу.\n\nДизайн багытында төмөнкү адистик жеткиликтүү:\n\n• Графикалык дизайн',
+        'buttons': {
+            'it': '💻 IT-багыттар',
+            'business': '💼 Бизнес-багыттар',
+            'design': '🎨 Дизайн',
+            'back': '🔙 Артка'
+        }
+    }
+}
+
+back = {'RU': 'Главное меню открыто.',
+        'KY': 'Башкы меню ачылды.',
+         'EN': 'The main menu is now open.'}

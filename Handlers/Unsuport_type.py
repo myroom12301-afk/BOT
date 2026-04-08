@@ -6,9 +6,9 @@ from servers import get_user_language
 router = Router()
 
 unsupported_content_text = {
-    "RU": "Этот тип сообщения пока не поддерживается. Пожалуйста, используйте текст или кнопки ниже.",
-    "EN": "This type of message is not supported yet. Please use text or the buttons below.",
-    "KY": "Бул түрдөгү билдирүү азырынча колдоого алынбайт. Сураныч, текст жазыңыз же төмөнкү баскычтарды колдонуңуз."
+    "RU": "Данный тип сообщения в настоящее время не поддерживается. Пожалуйста, используйте текстовые сообщения или кнопки меню.",
+    "EN": "This type of message is not currently supported. Please use text messages or the menu buttons.",
+    "KY": "Билдирүүнүн бул түрү азырынча колдоого алынбайт. Сураныч, тексттик билдирүүлөрдү же меню баскычтарын колдонуңуз."
 }
 
 UNSUPPORTED_TYPES = [

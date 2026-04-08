@@ -1,23 +1,23 @@
 Welcom_txt = {
     'info': {
-        'RU': 'Здесь вы можете узнать общую информацию о колледже, программах и преподавателях.',
+        'RU': 'В этом разделе представлена общая информация о колледже, образовательных направлениях и преподавательском составе.',
 
-        'KY': 'Бул жерде колледж, программалар жана мугалимдер жөнүндө жалпы маалымат ала аласыз.',
+        'KY': 'Бул бөлүмдө колледж, билим берүү багыттары жана окутуучулар курамы тууралуу жалпы маалымат берилет.',
 
-        'EN': 'Here you can find general information about the college, its programs, and faculty.'
+        'EN': 'This section provides general information about the college, its academic programs, and faculty.'
     },
     'cons': {
-        'RU': 'Если у вас есть вопросы, наша консультация поможет вам получить ответы.',
+        'RU': 'В этом разделе вы можете записаться на консультацию и получить ответы на интересующие вас вопросы.',
 
-        'KY': 'Суроолоруңуз болсо, биздин кеңеш берүү кызматы сизге жооп табууга жардам берет.',
+        'KY': 'Бул бөлүмдө консультацияга жазылып, сизди кызыктырган суроолорго жооп ала аласыз.',
 
-        'EN': 'If you have any questions, our consultation service will help you get answers.'
+        'EN': 'In this section, you can book a consultation and receive answers to your questions.'
     },
     'admis': {
-        'RU': 'Узнайте, как поступить в колледж, требования и сроки подачи документов.',
+        'RU': 'В этом разделе представлена информация о поступлении, требованиях и сроках подачи документов.',
 
-        'KY': 'Колледжге кантип кабыл алуу, талаптар жана документтерди тапшыруунун мөөнөтү жөнүндө билүү.',
+        'KY': 'Бул бөлүмдө кабыл алуу, талаптар жана документтерди тапшыруу мөөнөттөрү тууралуу маалымат берилет.',
 
-        'EN': 'Learn how to apply to the college, requirements, and deadlines for submitting documents.'
+        'EN': 'This section contains information about admission, requirements, and application deadlines.'
     }
 }

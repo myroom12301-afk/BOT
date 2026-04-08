@@ -43,7 +43,25 @@ def build_cons_preview(lang, data):
         f"{fields[lang]['time']}: {data.get('meet_time')}"
     )
 
-@router.callback_query(F.data.in_(con_time))
+
+async def _safe_delete(message):
+    try:
+        await message.delete()
+    except TelegramBadRequest as e:
+        if "message to delete not found" not in str(e):
+            raise
+
+
+@router.callback_query(F.data == 'back_', StateFilter(*CONSULTATION_STATES))
+async def back_in_consultation(cb: CallbackQuery, state: FSMContext):
+    user_id = cb.from_user.id
+    lang = get_user_language(user_id)
+    await _safe_delete(cb.message)
+    await state.clear()
+    await cb.message.answer(text=record_buttons[lang]['back']['frs_m'], reply_markup=con_kb(user_id))
+    await cb.answer()
+
+@router.callback_query(F.data.in_(con_time), StateFilter(Form.meet_time))
 async def ad(cb: CallbackQuery, state: FSMContext):
     await cb.answer()
     user_id = cb.from_user.id
@@ -61,7 +79,7 @@ async def ad(cb: CallbackQuery, state: FSMContext):
     )
 
 
-@router.callback_query(F.data.in_(["Student", "Parent"]))
+@router.callback_query(F.data.in_(["Student", "Parent"]), StateFilter(Form.meet_time))
 async def who_fun(cb: CallbackQuery, state: FSMContext):
     await cb.answer()
     user_id = cb.from_user.id
@@ -92,10 +110,10 @@ async def phone(m: Message, state: FSMContext):
     user_id = m.from_user.id
     lang = get_user_language(user_id)
     if not is_valid_phone(m.text):
-        await m.delete()
+        await _safe_delete(m)
         await m.answer(text=record_buttons[lang]['steps']['phone_error'])
         return
-    await m.delete()
+    await _safe_delete(m)
     await state.update_data(number=m.text)
     await state.set_state(Form.conf)
     data = await state.get_data()
@@ -104,7 +122,7 @@ async def phone(m: Message, state: FSMContext):
     await asyncio.sleep(1)
     await m.answer(text=build_cons_preview(lang, data), reply_markup=confim_kb(lang))
 
-@router.callback_query(F.data.startswith("date_"))
+@router.callback_query(F.data.startswith("date_"), StateFilter(Form.date))
 async def process_date(cb: CallbackQuery, state: FSMContext):
     await cb.answer()
     selected_date = cb.data.split("_")[1]
@@ -131,7 +149,7 @@ async def block_text_on_confirm(message: Message):
     await message.answer(text=record_buttons[lang]['steps']['confirm_pointer'])
 
 
-@router.callback_query(F.data=='conf')
+@router.callback_query(F.data=='conf', StateFilter(Form.conf))
 async def confirm(cb: CallbackQuery, state: FSMContext):
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
@@ -139,7 +157,7 @@ async def confirm(cb: CallbackQuery, state: FSMContext):
     result = add_cons(data, user_id, data.get('edit_cons_id'))
 
     if result == 'slot_taken':
-        await cb.message.delete()
+        await _safe_delete(cb.message)
         await cb.message.answer(text=record_buttons[lang]['steps']['slot_taken'])
         await cb.message.answer(
             text=record_buttons[lang]['steps']['time'],
@@ -150,7 +168,7 @@ async def confirm(cb: CallbackQuery, state: FSMContext):
         return
 
     if result == 'has_active':
-        await cb.message.delete()
+        await _safe_delete(cb.message)
         await cb.message.answer(text=record_buttons[lang]['sign_up']['already_have'])
         await cb.message.answer(text=record_buttons[lang]['back']['frs_m'], reply_markup=con_kb(user_id))
         await state.clear()
@@ -158,14 +176,14 @@ async def confirm(cb: CallbackQuery, state: FSMContext):
         return
 
     if result == 'missing_old':
-        await cb.message.delete()
+        await _safe_delete(cb.message)
         await cb.message.answer(text=record_buttons[lang]['view_records']['no_record'])
         await cb.message.answer(text=record_buttons[lang]['back']['frs_m'], reply_markup=con_kb(user_id))
         await state.clear()
         await cb.answer()
         return
 
-    await cb.message.delete()
+    await _safe_delete(cb.message)
     await cb.message.answer(
         text=record_buttons[lang]['steps']['edit_success']
         if data.get('edit_cons_id') is not None
