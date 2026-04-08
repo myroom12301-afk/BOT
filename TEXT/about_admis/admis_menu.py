@@ -1,29 +1,26 @@
 admis_menu_txt = {
     'RU': {
-        'dates': '📅 Сроки приёма',
+        'dates': '📝 Экзамены',
         'docs': '📄 Документы',
-        'price': '💰 Стоимость обучения',
-        'type': '🆓 Бюджет / Платное',
-        'score': '📊 Проходные баллы',
+        'price': '💰 Стоимость',
+        'type': '🔄 Переводы',
         'faq': '❓ Вопросы о поступлении',
         'back': '🔙 Назад'
     },
     'EN': {
-        'dates': '📅 Admission dates',
+        'dates': '📝 Exams',
         'docs': '📄 Documents',
-        'price': '💰 Tuition fee',
-        'type': '🆓 Budget / Paid',
-        'score': '📊 Passing scores',
-        'faq': '❓ Admission questions',
+        'price': '💰 Tuition Fees',
+        'type': '🔄 Transfers',
+        'faq': '❓ Admission Questions',
         'back': '🔙 Back'
     },
     'KY': {
-        'dates': '📅 Кабыл алуу мөөнөттөрү',
+        'dates': '📝 Экзамендер',
         'docs': '📄 Документтер',
         'price': '💰 Окуу акысы',
-        'type': '🆓 Бюджет / Контракт',
-        'score': '📊 Өтүү баллдары',
-        'faq': '❓ Кабыл алуу суроолору',
+        'type': '🔄 Которуулар',
+        'faq': '❓ Кабыл алуу боюнча суроолор',
         'back': '🔙 Артка'
     }
 }

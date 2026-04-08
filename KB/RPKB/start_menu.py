@@ -10,7 +10,6 @@ def start__menu(user_id):
         'events',
         'admis',
         'contacts',
-        'FAQ',
         'change_lang'
     ]
     for keys in buttons_texts:

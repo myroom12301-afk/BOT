@@ -5,7 +5,6 @@ start_menu_txt = {
         'events': '📅 Важные события',
         'admis': '🎓 Поступление',
         'contacts': '📞 Контакты',
-        'FAQ': '❓ FAQ',
         'change_lang': '🌐 Изменение языка'
     },
     'EN': {
@@ -14,7 +13,6 @@ start_menu_txt = {
         'events': '📅 Important Events',
         'admis': '🎓 Admission',
         'contacts': '📞 Contacts',
-        'FAQ': '❓ FAQ',
         'change_lang': '🌐 Change Language'
     },
     'KY': {
@@ -23,7 +21,6 @@ start_menu_txt = {
         'events': '📅 Маанилүү окуялар',
         'admis': '🎓 Кабыл алуу',
         'contacts': '📞 Байланыштар',
-        'FAQ': '❓ FAQ',
         'change_lang': '🌐 Тилди өзгөртүү'
     }
 }
@@ -55,11 +52,6 @@ start_menu_code = {
         'EN': '📞 Contacts',
         'KY': '📞 Байланыштар'
     },
-    'FAQ': {
-        'RU': '❓ FAQ',
-        'EN': '❓ FAQ',
-        'KY': '❓ FAQ'
-    },
     'location': {
         'RU': '📍 Локация',
         'EN': '📍 Location',
@@ -71,4 +63,3 @@ start_menu_code = {
         'KY': '🌐 Тилди өзгөртүү'
     }
 }
-

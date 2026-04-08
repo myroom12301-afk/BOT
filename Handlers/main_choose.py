@@ -7,7 +7,6 @@ from KB.RPKB.menu_adnis import admis_menu
 from TEXT.menu import start_menu_txt,start_menu_code
 from TEXT.choose import Welcom_txt
 from TEXT.contacts import Contacts_txt
-from TEXT.faq import faq_txt
 from KB.RPKB.about_cons import con_kb
 from KB.INKB.admin_cons import build_user_event_card_kb, build_user_events_list_kb
 from aiogram.fsm.scene import StateFilter
@@ -64,8 +63,6 @@ async def college(message: Message):
         await message.answer(text=Welcom_txt['admis'][lang], reply_markup=admis_menu(user_id))
     elif text in start_menu_code['contacts'][lang]:
         await message.answer(text=Contacts_txt[lang], reply_markup=None)
-    elif text in start_menu_code['FAQ'][lang]:
-        await message.answer(text=faq_txt[lang], reply_markup=None)
     elif text in start_menu_code['change_lang'][lang]:
         await message.answer(text='...', reply_markup=ReplyKeyboardRemove())
         await message.answer(text=language_buttons[lang]['change_language']['frs_m'], reply_markup=lang_choose_inkb())
