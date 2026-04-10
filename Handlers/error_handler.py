@@ -1,7 +1,7 @@
 import traceback
 
 from aiogram import Router
-from aiogram.exceptions import TelegramAPIError
+from aiogram.exceptions import TelegramAPIError, TelegramRetryAfter
 from aiogram.types import CallbackQuery, ErrorEvent, Message
 
 from config import ADMIN_IDS
@@ -105,12 +105,16 @@ async def _notify_admins(event: ErrorEvent):
 
 @router.errors()
 async def global_error_handler(event: ErrorEvent):
+    if isinstance(event.exception, TelegramRetryAfter):
+        return True
+
     print("Unhandled bot error:")
     traceback.print_exception(
         type(event.exception),
         event.exception,
         event.exception.__traceback__,
     )
+
     await _notify_admins(event)
 
     update = event.update

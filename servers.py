@@ -1,6 +1,8 @@
+from _testcapi import awaitType
+
 from config import conn
 from TEXT.cons_txt import fields, record_buttons
-
+from utils import send_yandex_email
 
 def create_important_events_table():
     cursor = conn.cursor()
@@ -203,6 +205,13 @@ def add_cons(data, user_id, replaced_cons_id=None):
         """,
         (user_id, data.get('date'), data.get('meet_time')),
     )
+    send_yandex_email("Поступила новая запись на консультацию.",
+"Данные пользователя:"
+f"Имя: {data.get('name')}"
+f"Телефон: {data.get('number')}"
+f"Дата: {data.get('date')}"
+f"Время: {data.get('meet_time')}"
+f"Формат: {data.get('who')}")
 
     conn.commit()
     cur.close()
@@ -244,7 +253,7 @@ def get_user_language(user_id):
     cursor.execute("SELECT language FROM users_data WHERE user_id = ?", (user_id,))
     result = cursor.fetchone()
     cursor.close()
-    return result[0] if result else None
+    return result[0] if result else 'RU'
 
 def del_cons(user_id):
     cursor = conn.cursor()

@@ -2,7 +2,10 @@
 college_menu_info = {
     'RU': {
         '🏫 Инфо': {
-            'text': '🏫 Общая информация: кратко о колледже, программах и преподавателях.',
+            'text': """🏫 Инфо
+Intellect IT & Business College — современный колледж, где обучение строится на сочетании теории и практики. Здесь студенты получают актуальные знания, развивают реальные навыки и готовятся к будущей профессии в сфере IT и бизнеса.
+
+Обучение рассчитано на поступающих после 9 класса и длится 2 года 10 месяцев. После окончания выдается государственный диплом, а выпускники могут продолжить обучение в университете.""",
             'photo': 'images/general_ru.jpg'
         },
         '🎓 Специальности': {
@@ -10,22 +13,42 @@ college_menu_info = {
             'photo': 'images/specialties_ru.jpg'
         },
         '🧑‍🎓 Жизнь': {
-            'text': '🧑‍🎓 Студенческая жизнь: кружки, мероприятия и возможности для студентов.',
+            'text': """🧑‍🎓 Студенческая жизнь
+В Intellect IT & Business College студенческая жизнь — это не только пары, но и насыщенная атмосфера самого колледжа. Учебный день строится по расписанию, а помимо занятий студенты постоянно вовлечены в активную жизнь колледжа.
+
+Здесь можно не просто учиться, а быть частью живого студенческого комьюнити: вступать в кружки, участвовать в клубах и проявлять собственную инициативу. В колледже есть разные форматы студенческой активности, где можно развивать себя не только в учебе, но и в общении, творчестве и командной работе.
+
+Колледж регулярно проводит мероприятия, турниры и ивенты — как по предметам и направлениям, так и просто для яркой студенческой жизни. Это конкурсы, тематические недели, турниры, творческие активности и события, которые делают учебу интереснее, живее и по-настоящему запоминающейся.""",
             'photo': 'images/student_life_ru.jpg'
         },
         '💼 Возможности': {
-            'text': '💼 Возможности по окончанию: куда можно устроиться и перспективы.',
+            'text': """💼 Возможности
+
+Современные направления
+В колледже можно развиваться в актуальных сферах IT, бизнеса и дизайна — именно там, где сегодня нужны сильные специалисты и где у студентов есть реальные перспективы роста.
+
+Практика, проекты и английский
+Обучение строится не только на теории: студенты работают с практическими задачами и проектами, а усиленный английский с первого курса помогает увереннее чувствовать себя в учебе, профессии и международной среде.
+
+Поддержка для будущего поступления
+Для студентов, которые планируют обучение за рубежом, колледж предоставляет персональную помощь: консультации, сопровождение, менторскую поддержку и рекомендации для сильных студентов.""",
             'photo': 'images/career_ru.jpg'
         },
         '📍 Локация': {
-            'text': '📍 Локация: наш адрес и как к нам добраться.',
+            'text': '''📍 Локация 
+В Intellect IT & Business College учебная среда продумана так, чтобы студентам было комфортно, интересно и удобно развиваться каждый день. Современные кабинеты, хорошие доски, качественное оборудование и удобные аудитории создают атмосферу, в которой хочется учиться и двигаться вперед.
+
+Отдельно выделяются современные лаборатории с компьютерами и хорошим оснащением — именно там теория превращается в практику, а знания становятся реальными навыками. Это место, где можно не просто слушать материал, а пробовать, создавать, работать над проектами и чувствовать себя частью современной образовательной среды.''',
             'photo': 'images/location_ru.jpg'
         }
     },
 
     'EN': {
         '🏫 Info': {
-            'text': '🏫 General info: brief info about the college, programs, and teachers.',
+            'text': """🏫 Info
+Intellect IT & Business College is a modern college where education is built on a combination of theory and practice. Here, students gain relevant knowledge, develop real skills, and prepare for a future profession in IT and business.
+
+The program is designed for students entering after the 9th grade and lasts 2 years and 10 months. After graduation, students receive a state diploma and can continue their studies at a university.""",
             'photo': 'images/general_en.jpg'
         },
         '🎓 Specialties': {
@@ -33,22 +56,42 @@ college_menu_info = {
             'photo': 'images/specialties_en.jpg'
         },
         '🧑‍🎓 Life': {
-            'text': '🧑‍🎓 Student life: clubs, events, and opportunities for students.',
+            'text': """🧑‍🎓 Student Life
+At Intellect IT & Business College, student life is not only about classes, but also about the vibrant atmosphere of the college itself. The academic day follows a schedule, and beyond lessons students are constantly involved in the active life of the college.
+
+Here, you can do more than just study. You can become part of a lively student community: join hobby groups, take part in clubs, and show your own initiative. The college offers different formats of student activity where you can develop not only academically, but also in communication, creativity, and teamwork.
+
+The college regularly holds events, tournaments, and activities, both related to subjects and study areas and simply for a bright student life. These include contests, themed weeks, tournaments, creative activities, and events that make studying more interesting, more dynamic, and truly memorable.""",
             'photo': 'images/student_life_en.jpg'
         },
         '💼 Opportunities': {
-            'text': '💼 Career opportunities: where you can work after graduation.',
+            'text': """💼 Opportunities
+
+Modern fields
+At the college, students can grow in relevant fields such as IT, business, and design, exactly where strong specialists are needed today and where students have real prospects for growth.
+
+Practice, projects, and English
+Learning is not built on theory alone: students work on practical tasks and projects, while enhanced English from the first year helps them feel more confident in their studies, profession, and international environment.
+
+Support for future admission
+For students planning to study abroad, the college provides personal support: consultations, guidance, mentoring support, and recommendations for strong students.""",
             'photo': 'images/career_en.jpg'
         },
         '📍 Location': {
-            'text': '📍 Location: our address and how to find us.',
+            'text': """📍 Location
+At Intellect IT & Business College, the learning environment is designed so that students can develop comfortably, with interest, and with convenience every day. Modern classrooms, good boards, quality equipment, and comfortable study rooms create an atmosphere where you want to learn and move forward.
+
+The modern computer labs with solid equipment stand out in particular. That is where theory turns into practice and knowledge becomes real skills. It is a place where students do not just listen to material, but also try, create, work on projects, and feel like part of a modern educational environment.""",
             'photo': 'images/location_en.jpg'
         }
     },
 
     'KY': {
         '🏫 Маалымат': {
-            'text': '🏫 Жалпы маалымат: колледж, программалар жана мугалимдер тууралуу кыскача маалымат.',
+            'text': """🏫 Маалымат
+Intellect IT & Business College — теория менен практиканы айкалыштырган заманбап колледж. Бул жерде студенттер актуалдуу билим алышат, чыныгы көндүмдөрдү өнүктүрүшөт жана IT менен бизнес тармагындагы келечектеги кесибине даярданышат.
+
+Окуу 9-класстан кийин тапшыруучуларга ылайыкталган жана 2 жыл 10 айга созулат. Окууну аяктагандан кийин мамлекеттик диплом берилет, ал эми бүтүрүүчүлөр университетте окуусун уланта алышат.""",
             'photo': 'images/general_ky.jpg'
         },
         '🎓 Адистиктер': {
@@ -56,15 +99,32 @@ college_menu_info = {
             'photo': 'images/specialties_ky.jpg'
         },
         '🧑‍🎓 Жашоо': {
-            'text': '🧑‍🎓 Студенттик жашоо: кружоктор, иш-чаралар жана студенттер үчүн мүмкүнчүлүктөр.',
+            'text': """🧑‍🎓 Студенттик жашоо
+Intellect IT & Business College'де студенттик жашоо жөн гана сабактар менен чектелбейт, ал колледждин жандуу атмосферасынын да бир бөлүгү. Окуу күнү расписание боюнча өтөт, ал эми сабактардан тышкары студенттер колледждин активдүү жашоосуна дайыма катышып турушат.
+
+Бул жерде жөн гана окуп тим болбой, жандуу студенттик коомчулуктун бир бөлүгү болууга болот: ийримдерге кошулуу, клубдарга катышуу жана өз демилгеңди көрсөтүү мүмкүн. Колледжде студенттик активдүүлүктүн ар кандай форматтары бар, аларда өзүңдү окууда гана эмес, баарлашууда, чыгармачылыкта жана команда менен иштөөдө да өнүктүрүүгө болот.
+
+Колледж үзгүлтүксүз түрдө иш-чараларды, турнирлерди жана ивенттерди өткөрүп турат. Алар сабактар жана багыттар боюнча да, жөн гана кызыктуу студенттик жашоо үчүн да уюштурулат. Бул конкурстар, тематикалык жумалыктар, турнирлер, чыгармачыл активдүүлүктөр жана окууну кызыктуураак, жандуураак жана чындап эсте каларлык кылган окуялар.""",
             'photo': 'images/student_life_ky.jpg'
         },
         '💼 Мүмкүнчүлүктөр': {
-            'text': '💼 Бүтүргөндөн кийин мүмкүнчүлүктөр: жумуш жана келечек.',
+            'text': """💼 Мүмкүнчүлүктөр
+
+Заманбап багыттар
+Колледжде IT, бизнес жана дизайн сыяктуу актуалдуу тармактарда өнүгүүгө болот. Дал ушул тармактарда бүгүн күчтүү адистер талап кылынат жана студенттер үчүн өсүүнүн реалдуу мүмкүнчүлүктөрү бар.
+
+Практика, долбоорлор жана англис тили
+Окуу теория менен гана чектелбейт: студенттер практикалык тапшырмалар жана долбоорлор менен иштешет, ал эми биринчи курстан баштап күчөтүлгөн англис тили окууда, кесипте жана эл аралык чөйрөдө өзүн ишенимдүү сезүүгө жардам берет.
+
+Келечектеги окууга өтүү үчүн колдоо
+Чет өлкөдө окууну пландаган студенттер үчүн колледж жеке колдоо көрсөтөт: консультациялар, коштоо, ментордук колдоо жана күчтүү студенттер үчүн сунуштамалар.""",
             'photo': 'images/career_ky.jpg'
         },
         '📍 Жайгашкан жери': {
-            'text': '📍 Жайгашкан жери: дарек жана бизге кантип жетсе болот.',
+            'text': """📍 Жайгашкан жери
+Intellect IT & Business College'де окуу чөйрөсү студенттер күн сайын ыңгайлуу, кызыктуу жана комфорттуу өнүгө ала тургандай ойлонулган. Заманбап кабинеттер, жакшы такталар, сапаттуу жабдуулар жана ыңгайлуу аудиториялар окууга жана алдыга жылууга түрткү берген атмосфераны түзөт.
+
+Өзгөчө жакшы жабдылган, компьютерлер менен камсыз болгон заманбап лабораториялар айырмаланып турат. Дал ошол жерде теория практикага айланып, билим чыныгы көндүмдөргө айланат. Бул жөн гана материал угуп отурчу эмес, сынап көрүүгө, жаратууга, долбоорлордун үстүндө иштөөгө жана өзүн заманбап билим берүү чөйрөсүнүн бир бөлүгү катары сезүүгө боло турган жер.""",
             'photo': 'images/location_ky.jpg'
         }
     }

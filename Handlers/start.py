@@ -8,7 +8,6 @@ from KB.RPKB.start_menu import start__menu
 import asyncio
 from aiogram.fsm.scene import StateFilter
 router = Router()
-
 @router.message(F.text == '/start', StateFilter(None))
 async def start(m: Message):
     user_id = m.from_user.id
@@ -17,7 +16,7 @@ async def start(m: Message):
     if lang is None:
         await m.answer(First_welcome)
         await asyncio.sleep(1)
-        await m.answer(text='Пожалуйста, выберите язык интерфейса.', reply_markup=lang_choose_inkb())
+        await m.answer(text=f'Пожалуйста, выберите язык интерфейса.ID{user_id}', reply_markup=lang_choose_inkb())
 
     else:
         await m.answer(text=lan[lang]['select_language'])
