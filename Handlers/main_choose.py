@@ -1,20 +1,21 @@
-from aiogram.types import CallbackQuery, Message, Contact
+from aiogram.types import CallbackQuery, Message
 from aiogram import F, Router
-from aiogram.exceptions import TelegramBadRequest
+from aiogram.fsm.scene import StateFilter
+from aiogram.types import ReplyKeyboardRemove
+
 from servers import get_active_important_events, get_important_event_by_id, get_user_language
 from KB.RPKB.about_college_rpkb import about_college
 from KB.RPKB.menu_adnis import admis_menu
-from TEXT.menu import start_menu_txt,start_menu_code
-from TEXT.choose import Welcom_txt
-from TEXT.contacts import Contacts_txt
 from KB.RPKB.about_cons import con_kb
 from KB.INKB.admin_cons import build_user_event_card_kb, build_user_events_list_kb
-from aiogram.fsm.scene import StateFilter
+from KB.INKB.choose_lang import lang_choose_inkb
+from TEXT.menu import start_menu_txt, start_menu_code
+from TEXT.choose import Welcom_txt
+from TEXT.contacts import Contacts_txt
 from TEXT.lang_change import language_buttons
 from TEXT.events_txt import events_txt
-from aiogram.types import ReplyKeyboardRemove
-from KB.INKB.choose_lang import lang_choose_inkb
-from utils import build_event_text
+from utils import build_event_text, safe_edit_text
+
 router = Router()
 all_words = [main for i in start_menu_txt.values() for main in i.values()]
 
@@ -24,23 +25,16 @@ async def send_important_events(target, user_id, edit=False):
     events = get_active_important_events()
     if not events:
         if edit:
-            try:
-                await target.edit_text(text=events_txt[lang]['empty'], reply_markup=None)
-            except TelegramBadRequest as e:
-                if "message is not modified" not in str(e):
-                    raise
+            await safe_edit_text(target, text=events_txt[lang]['empty'], reply_markup=None)
             return
         await target.answer(text=events_txt[lang]['empty'], reply_markup=None)
         return
     if edit:
-        try:
-            await target.edit_text(
-                text=events_txt[lang]['title'],
-                reply_markup=build_user_events_list_kb(events),
-            )
-        except TelegramBadRequest as e:
-            if "message is not modified" not in str(e):
-                raise
+        await safe_edit_text(
+            target,
+            text=events_txt[lang]['title'],
+            reply_markup=build_user_events_list_kb(events),
+        )
         return
     await target.answer(
         text=events_txt[lang]['title'],
@@ -66,8 +60,6 @@ async def college(message: Message):
     elif text in start_menu_code['change_lang'][lang]:
         await message.answer(text='...', reply_markup=ReplyKeyboardRemove())
         await message.answer(text=language_buttons[lang]['change_language']['frs_m'], reply_markup=lang_choose_inkb())
-    else:
-        await message.answer(text='еror')
 
 
 @router.callback_query(F.data == 'important_events')
@@ -87,17 +79,15 @@ async def important_event_detail_callback(callback: CallbackQuery):
 
     event_id = int(callback.data.split(':')[1])
     event = get_important_event_by_id(event_id)
+    lang = get_user_language(callback.from_user.id) or 'RU'
+
     if event is None or not event[6]:
-        await callback.answer(events_txt[get_user_language(callback.from_user.id) or 'RU']['empty'], show_alert=True)
+        await callback.answer(events_txt[lang]['empty'], show_alert=True)
         return
 
-    lang = get_user_language(callback.from_user.id) or 'RU'
-    try:
-        await callback.message.edit_text(
-            text=build_event_text(lang, event, events_txt),
-            reply_markup=build_user_event_card_kb(event_id, event[4], event[5]),
-        )
-    except TelegramBadRequest as e:
-        if "message is not modified" not in str(e):
-            raise
+    await safe_edit_text(
+        callback.message,
+        text=build_event_text(lang, event, events_txt),
+        reply_markup=build_user_event_card_kb(event_id, event[4], event[5]),
+    )
     await callback.answer()

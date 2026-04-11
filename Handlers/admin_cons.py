@@ -29,7 +29,7 @@ from servers import (
     get_user_language,
     update_consultation_status,
 )
-from utils import build_event_text
+from utils import build_event_text, safe_edit_text
 
 router = Router()
 PAGE_SIZE = 5
@@ -81,11 +81,7 @@ async def send_admin_events_list(target, edit=False):
     text = admin_cons_text['events_title'] if events else admin_cons_text['events_empty']
     reply_markup = build_admin_events_list_kb(events)
     if edit:
-        try:
-            await target.edit_text(text, reply_markup=reply_markup)
-        except TelegramBadRequest as e:
-            if "message is not modified" not in str(e):
-                raise
+        await safe_edit_text(target, text, reply_markup=reply_markup)
         return
     await target.answer(text, reply_markup=reply_markup)
 
@@ -99,13 +95,8 @@ async def notify_users_about_important_event(bot, title, event_date=None):
         text += f"\n\n{events_txt[lang]['notification_open']}"
         try:
             await bot.send_message(user_id, text)
-        except TelegramForbiddenError:
+        except (TelegramForbiddenError, TelegramBadRequest):
             pass
-        except TelegramBadRequest:
-            pass
-        except Exception:
-            pass
-
 
 async def send_event_publish_preview(message: Message, state: FSMContext):
     data = await state.get_data()
@@ -142,37 +133,32 @@ async def render_first_admin_page(message):
     total_count = get_active_consultations_count()
 
     if total_count == 0:
-        try:
-            await message.edit_text(admin_cons_text['empty'])
-        except TelegramBadRequest as e:
-            if "message is not modified" not in str(e):
-                raise
+        await safe_edit_text(message, admin_cons_text['empty'])
         return
 
-    try:
-        await message.edit_text(
-            admin_cons_text['list_title'].format(page=1),
-            reply_markup=build_admin_cons_list_kb(
-                bookings,
-                page=1,
-                has_next_page=total_count > PAGE_SIZE,
-            ),
-        )
-    except TelegramBadRequest as e:
-        if "message is not modified" not in str(e):
-            raise
+    await safe_edit_text(
+        message,
+        admin_cons_text['list_title'].format(page=1),
+        reply_markup=build_admin_cons_list_kb(
+            bookings,
+            page=1,
+            has_next_page=total_count > PAGE_SIZE,
+        ),
+    )
 
 
 async def render_admin_event_card(message, event_id):
     event = get_important_event_by_id(event_id)
     if event is None or not event[6]:
-        await message.edit_text(
+        await safe_edit_text(
+            message,
             admin_cons_text['event_not_found'],
             reply_markup=build_admin_events_list_kb(get_active_important_events()),
         )
         return False
     lang = get_user_language(message.chat.id) or 'RU'
-    await message.edit_text(
+    await safe_edit_text(
+        message,
         build_event_text(lang, event, events_txt),
         reply_markup=build_admin_event_card_kb(event_id, event[4], event[5]),
     )
@@ -213,23 +199,16 @@ async def admin_cons_page_callback(callback: CallbackQuery):
     total_count = get_active_consultations_count()
 
     if total_count == 0:
-        try:
-            await message.edit_text(admin_cons_text['empty'])
-        except TelegramBadRequest as e:
-            if "message is not modified" not in str(e):
-                raise
+        await safe_edit_text(message, admin_cons_text['empty'])
         await callback.answer()
         return
 
     has_next_page = total_count > page * PAGE_SIZE
-    try:
-        await message.edit_text(
-            admin_cons_text['list_title'].format(page=page),
-            reply_markup=build_admin_cons_list_kb(bookings, page, has_next_page),
-        )
-    except TelegramBadRequest as e:
-        if "message is not modified" not in str(e):
-            raise
+    await safe_edit_text(
+        message,
+        admin_cons_text['list_title'].format(page=page),
+        reply_markup=build_admin_cons_list_kb(bookings, page, has_next_page),
+    )
     await callback.answer()
 
 
@@ -250,14 +229,11 @@ async def admin_cons_detail_callback(callback: CallbackQuery):
         await callback.answer(admin_cons_text['booking_not_found'], show_alert=True)
         return
 
-    try:
-        await message.edit_text(
-            build_card_text(booking),
-            reply_markup=build_admin_cons_card_kb(cons_id),
-        )
-    except TelegramBadRequest as e:
-        if "message is not modified" not in str(e):
-            raise
+    await safe_edit_text(
+        message,
+        build_card_text(booking),
+        reply_markup=build_admin_cons_card_kb(cons_id),
+    )
     await callback.answer()
 
 
@@ -325,6 +301,9 @@ async def admin_event_add_callback(callback: CallbackQuery, state: FSMContext):
 
 @router.message(Form.event_title)
 async def admin_event_title_step(message: Message, state: FSMContext):
+    if not message.text:
+        await message.answer(admin_cons_text['event_title_step'])
+        return
     title = message.text.strip()
     if not title:
         await message.answer(admin_cons_text['event_title_step'])
@@ -336,18 +315,22 @@ async def admin_event_title_step(message: Message, state: FSMContext):
 
 @router.message(Form.event_date)
 async def admin_event_date_step(message: Message, state: FSMContext):
+    date_text = (message.text or '').strip()
     try:
-        datetime.strptime(message.text.strip(), '%Y-%m-%d')
+        datetime.strptime(date_text, '%Y-%m-%d')
     except ValueError:
         await message.answer(admin_cons_text['event_date_error'])
         return
-    await state.update_data(event_date=message.text.strip())
+    await state.update_data(event_date=date_text)
     await state.set_state(Form.event_description)
     await message.answer(admin_cons_text['event_description_step'])
 
 
 @router.message(Form.event_description)
 async def admin_event_description_step(message: Message, state: FSMContext):
+    if not message.text:
+        await message.answer(admin_cons_text['event_description_step'])
+        return
     await state.update_data(description=message.text.strip())
     await state.set_state(Form.event_link)
     await message.answer(admin_cons_text['event_link_step'])
@@ -362,6 +345,9 @@ async def admin_event_skip_link(message: Message, state: FSMContext):
 
 @router.message(Form.event_link)
 async def admin_event_link_step(message: Message, state: FSMContext):
+    if not message.text:
+        await message.answer(admin_cons_text['event_link_step'])
+        return
     await state.update_data(link=message.text.strip())
     await state.set_state(Form.event_button_text)
     await message.answer(admin_cons_text['event_button_text_step'])
@@ -376,6 +362,9 @@ async def admin_event_skip_button_text(message: Message, state: FSMContext):
 
 @router.message(Form.event_button_text)
 async def admin_event_button_text_step(message: Message, state: FSMContext):
+    if not message.text:
+        await message.answer(admin_cons_text['event_button_text_step'])
+        return
     await state.update_data(button_text=message.text.strip() if (await state.get_data()).get('link') else None)
     await state.set_state(Form.event_confirm)
     await send_event_publish_preview(message, state)
@@ -405,10 +394,10 @@ async def admin_event_publish_callback(callback: CallbackQuery, state: FSMContex
         data.get('button_text'),
     )
     await state.clear()
+    await callback.answer()  # Must answer within 30s — do it before slow notify loop.
     await message.answer(admin_cons_text['event_added'])
     await notify_users_about_important_event(callback.bot, data.get('title'), data.get('event_date'))
     await send_admin_events_list(message)
-    await callback.answer()
 
 
 @router.callback_query(F.data == 'admin_event_cancel')
@@ -452,8 +441,8 @@ async def admin_cons_done_callback(callback: CallbackQuery):
     try:
         user_lang = get_user_language(booking[3]) or 'RU'
         await callback.bot.send_message(booking[3], booking_confirmed_user_text[user_lang])
-    except (TelegramForbiddenError, TelegramBadRequest) as e:
-        print(f"Failed to send confirmation to user {booking[3]}: {e}")
+    except (TelegramForbiddenError, TelegramBadRequest):
+        pass
     await render_first_admin_page(message)
     await callback.answer(admin_cons_text['booking_confirmed'])
 

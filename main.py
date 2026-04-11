@@ -1,5 +1,12 @@
+import logging
+
 from aiogram import Bot, Dispatcher
 from config import TOKEN
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
 from Handlers.admin_cons import router as admin_cons_router
 from Handlers.error_handler import router as error_router
 from Handlers.start import router as start_router

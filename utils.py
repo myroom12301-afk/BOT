@@ -1,6 +1,32 @@
 import re
 from datetime import datetime
 
+from aiogram.exceptions import TelegramBadRequest
+from aiogram.types.inaccessible_message import InaccessibleMessage
+
+
+async def safe_delete(message) -> None:
+    """Delete a message, silently ignoring 'message not found' errors and inaccessible/None messages."""
+    if not message or isinstance(message, InaccessibleMessage):
+        return
+    try:
+        await message.delete()
+    except TelegramBadRequest as e:
+        if "message to delete not found" not in str(e):
+            raise
+
+
+async def safe_edit_text(message, text: str, **kwargs) -> None:
+    """Edit message text, silently ignoring 'message is not modified' errors and inaccessible/None messages."""
+    if not message or isinstance(message, InaccessibleMessage):
+        return
+    try:
+        await message.edit_text(text, **kwargs)
+    except TelegramBadRequest as e:
+        if "message is not modified" not in str(e):
+            raise
+
+
 def is_valid_phone(phone: str) -> bool:
     phone = phone.strip()
     pattern = r'^0\d{3}([ ]?)\d{3}\1\d{3}$'
