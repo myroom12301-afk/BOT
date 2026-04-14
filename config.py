@@ -1,5 +1,10 @@
+import os
 import sqlite3
-TOKEN = '7710896707:AAGqrnNU1qHpUhB3YtN-acJ7n2shCHB21jk'
+from dotenv import load_dotenv
+
+load_dotenv()
+
+TOKEN = os.environ.get('TELEGRAM_TOKEN')
 # Telegram user_id администраторов, которым доступна команда /admin_cons.
 ADMIN_IDS = (6650088790,)
 
