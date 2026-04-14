@@ -16,7 +16,7 @@ async def start(m: Message):
     if lang is None:
         await m.answer(First_welcome)
         await asyncio.sleep(1)
-        await m.answer(text=f'Пожалуйста, выберите язык интерфейса.ID{user_id}', reply_markup=lang_choose_inkb())
+        await m.answer(text=f'Пожалуйста, выберите язык интерфейса', reply_markup=lang_choose_inkb())
 
     else:
         await m.answer(text=lan[lang]['select_language'])

@@ -1,8 +1,8 @@
-from _testcapi import awaitType
 
 from config import conn
 from TEXT.cons_txt import fields, record_buttons
-from utils import send_yandex_email
+from utils import send_email
+
 
 def create_important_events_table():
     cursor = conn.cursor()
@@ -72,7 +72,6 @@ def init_db():
     meet_time TEXT,
     records_count INTEGER DEFAULT 0
   )""")
-
 
     cursor.execute(
         """
@@ -205,13 +204,13 @@ def add_cons(data, user_id, replaced_cons_id=None):
         """,
         (user_id, data.get('date'), data.get('meet_time')),
     )
-    send_yandex_email("Поступила новая запись на консультацию.",
-"Данные пользователя:"
-f"Имя: {data.get('name')}"
-f"Телефон: {data.get('number')}"
-f"Дата: {data.get('date')}"
-f"Время: {data.get('meet_time')}"
-f"Формат: {data.get('who')}")
+    body = (f" Данные пользователя: "
+            f"\nИмя: {data.get('name')} "
+            f"\nТелефон: {data.get('number')} "
+            f"\nДата: {data.get('date')} "
+            f"\nВремя: {data.get('meet_time')} "
+            f"\nФормат: {data.get('who')}")
+    send_email("Поступила новая запись на консультацию.", body=body)
 
     conn.commit()
     cur.close()
@@ -226,11 +225,12 @@ def get_user_cons(lang, user_id):
     text = (
         f"{fields[lang]['name']}: {name}\n"
         f"{fields[lang]['who']}: {who}\n"
-        f"{fields[lang]['phone']}: {'0'+str(phone_number)}\n"
+        f"{fields[lang]['phone']}: {'0' + str(phone_number)}\n"
         f"{fields[lang]['date']}: {data}\n"
         f"{fields[lang]['time']}: {meet_time}"
     )
     return text
+
 
 def add_user(user_id, language):
     cursor = conn.cursor()
@@ -248,12 +248,14 @@ def add_user(user_id, language):
     conn.commit()
     cursor.close()
 
+
 def get_user_language(user_id):
     cursor = conn.cursor()
     cursor.execute("SELECT language FROM users_data WHERE user_id = ?", (user_id,))
     result = cursor.fetchone()
     cursor.close()
     return result[0] if result else 'RU'
+
 
 def del_cons(user_id):
     cursor = conn.cursor()
@@ -266,7 +268,7 @@ def del_cons(user_id):
 
     cursor.execute("""UPDATE users_data
     SET name=?, who=?, phone_number=?, data=?, meet_time=?
-    WHERE user_id=?""", (None,None,None,None,None, user_id))
+    WHERE user_id=?""", (None, None, None, None, None, user_id))
     conn.commit()
     cursor.close()
     return True
