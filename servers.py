@@ -1,7 +1,6 @@
 
 from config import conn
 from TEXT.cons_txt import fields, record_buttons
-from utils import send_email
 
 
 def create_important_events_table():
@@ -204,13 +203,6 @@ def add_cons(data, user_id, replaced_cons_id=None):
         """,
         (user_id, data.get('date'), data.get('meet_time')),
     )
-    body = (f" Данные пользователя: "
-            f"\nИмя: {data.get('name')} "
-            f"\nТелефон: {data.get('number')} "
-            f"\nДата: {data.get('date')} "
-            f"\nВремя: {data.get('meet_time')} "
-            f"\nФормат: {data.get('who')}")
-    send_email("Поступила новая запись на консультацию.", body=body)
 
     conn.commit()
     cur.close()

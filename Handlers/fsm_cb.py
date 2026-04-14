@@ -11,8 +11,7 @@ from KB.INKB.cons import inkb_who, cons_time
 from KB.RPKB.about_cons import con_kb
 from TEXT.cons_txt import record_buttons, fields
 from servers import get_user_language, add_cons
-from utils import is_valid_phone, safe_delete
-
+from utils import is_valid_phone, safe_delete, send_email
 
 con_time = ['10:00', '12:00', '14:00', '16:00']
 CONSULTATION_STATES = (
@@ -165,6 +164,14 @@ async def confirm(cb: CallbackQuery, state: FSMContext):
     )
     await asyncio.sleep(1)
     await cb.message.answer(text=record_buttons[lang]['back']['frs_m'], reply_markup=con_kb(user_id))
+    body = (f" Данные пользователя: "
+            f"\nИмя: {data.get('name')} "
+            f"\nТелефон: {data.get('number')} "
+            f"\nДата: {data.get('date')} "
+            f"\nВремя: {data.get('meet_time')} "
+            f"\nФормат: {data.get('who')}")
+    send_email(subject="Поступила новая запись на консультацию.", body=body)
+
     await state.clear()
     await cb.answer()
 
