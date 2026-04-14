@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: intellect-college-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    # Uncomment the following lines if you use SQLite to persist the database
+    # volumes:
+    #   - ./data:/app/data
