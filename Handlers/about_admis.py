@@ -24,4 +24,4 @@ async def cons_menu(message: Message):
     if message.text in ['🔙 Back', '🔙 Назад', '🔙 Артка']:
         await safe_answer(message, text=back[lang], reply_markup=start__menu(user_id))
     else:
-        await safe_answer(message, text=admission_menu_info[lang][message.text]['text'])
+        await safe_answer(message, text=admission_menu_info[lang][message.text]['text'], parse_mode='HTML')

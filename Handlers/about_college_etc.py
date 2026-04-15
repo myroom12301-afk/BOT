@@ -33,7 +33,7 @@ async def college_menu(message: Message):
             reply_markup=specialties_kb(lang)
         )
     else:
-        await safe_answer(message, text=college_menu_info[lang][message.text]['text'])
+        await safe_answer(message, text=college_menu_info[lang][message.text]['text'], parse_mode='HTML')
 
 
 @router.callback_query(F.data.startswith('college_spec:'))

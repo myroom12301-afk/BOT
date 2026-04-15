@@ -18,7 +18,7 @@ from Handlers.fsm_cb import router as fsm_router
 from Handlers.Unsuport_type import router as filter_router
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.WARNING,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 bot = Bot(token=TOKEN)

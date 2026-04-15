@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from aiogram import F, Router
 from aiogram.filters import StateFilter
@@ -10,7 +11,7 @@ from KB.INKB.conf import confim_kb
 from KB.INKB.cons import inkb_who, cons_time
 from KB.RPKB.about_cons import con_kb
 from TEXT.cons_txt import record_buttons, fields
-from servers import get_user_language, add_cons
+from servers import get_user_language, add_cons, get_user_active_booking
 from utils import is_valid_phone, safe_delete, send_email
 
 con_time = ['10:00', '12:00', '14:00', '16:00']
@@ -50,12 +51,33 @@ async def ad(cb: CallbackQuery, state: FSMContext):
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
     await state.update_data(meet_time=cb.data)
+    data = await state.get_data()
     await safe_delete(cb.message)
-    await cb.bot.send_message(
-        cb.from_user.id,
-        text=record_buttons[lang]['steps']['who'],
-        reply_markup=inkb_who(user_id),
-    )
+
+    if data.get('edit_cons_id') is not None:
+        # Режим редактирования: берём имя/кто/телефон из текущей записи
+        booking = get_user_active_booking(user_id)
+        if booking is None:
+            await cb.bot.send_message(user_id, text=record_buttons[lang]['view_records']['no_record'])
+            await state.clear()
+            return
+        _, name, who, phone, _, _ = booking
+        await state.update_data(name=name, who=who, number=str(phone))
+        await state.set_state(Form.conf)
+        updated_data = await state.get_data()
+        await cb.bot.send_message(user_id, text=record_buttons[lang]['steps']['confirm'])
+        await asyncio.sleep(1)
+        await cb.bot.send_message(
+            user_id,
+            text=build_cons_preview(lang, updated_data),
+            reply_markup=confim_kb(lang),
+        )
+    else:
+        await cb.bot.send_message(
+            cb.from_user.id,
+            text=record_buttons[lang]['steps']['who'],
+            reply_markup=inkb_who(user_id),
+        )
 
 
 @router.callback_query(F.data.in_(["Student", "Parent"]), StateFilter(Form.meet_time))
@@ -164,13 +186,21 @@ async def confirm(cb: CallbackQuery, state: FSMContext):
     )
     await asyncio.sleep(1)
     await cb.message.answer(text=record_buttons[lang]['back']['frs_m'], reply_markup=con_kb(user_id))
-    body = (f" Данные пользователя: "
-            f"\nИмя: {data.get('name')} "
-            f"\nТелефон: {data.get('number')} "
-            f"\nДата: {data.get('date')} "
-            f"\nВремя: {data.get('meet_time')} "
-            f"\nФормат: {data.get('who')}")
-    send_email(subject="Поступила новая запись на консультацию.", body=body)
+    body = (
+        f" Данные пользователя:"
+        f"\nИмя: {data.get('name')}"
+        f"\nТелефон: {data.get('number')}"
+        f"\nДата: {data.get('date')}"
+        f"\nВремя: {data.get('meet_time')}"
+        f"\nФормат: {data.get('who')}"
+    )
+    try:
+        if data.get('edit_cons_id') is not None:
+            send_email(subject="Запись на консультацию была изменена.", body=body)
+        else:
+            send_email(subject="Поступила новая запись на консультацию.", body=body)
+    except Exception:
+        logging.exception("Не удалось отправить письмо о записи на консультацию")
 
     await state.clear()
     await cb.answer()

@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import F, Router
 from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
@@ -11,7 +13,7 @@ from TEXT.cons_txt import record_buttons
 from TEXT.FIRST_MESSAGE.first_Message import lange
 from TEXT.delete_user_cons import delete_record_txt
 from servers import add_user, get_user_language, del_cons, get_user_active_booking
-from utils import safe_delete, safe_edit_text
+from utils import safe_delete, safe_edit_text, send_email
 
 con_time = ['10:00', '12:00', '14:00', '16:00']
 router = Router()
@@ -56,10 +58,24 @@ async def back_main(cb: CallbackQuery, state: FSMContext):
 async def del_cone(cb: CallbackQuery):
     user_id = cb.from_user.id
     lang = get_user_language(user_id)
+    booking = get_user_active_booking(user_id)
     deleted = del_cons(user_id)
     await safe_delete(cb.message)
     if deleted:
         await cb.message.answer(text=delete_record_txt[lang]['success_msg'])
+        _, name, who, phone, slot_date, slot_time = booking
+        body = (
+            f" Данные пользователя:"
+            f"\nИмя: {name}"
+            f"\nТелефон: {phone}"
+            f"\nДата: {slot_date}"
+            f"\nВремя: {slot_time}"
+            f"\nФормат: {who}"
+        )
+        try:
+            send_email(subject="Запись на консультацию была удалена.", body=body)
+        except Exception:
+            logging.exception("Не удалось отправить письмо об удалении записи")
     else:
         await cb.message.answer(text=delete_record_txt[lang]['already_deleted'])
     await cb.answer()

@@ -35,7 +35,7 @@ record_buttons = {
             'data': 'Пожалуйста, выберите дату консультации.',
 
             'confirm': 'Проверьте введённые данные и подтвердите запись.',
-            'success': 'Вы успешно записаны на консультацию.\n\nЕсли у вас возникнут дополнительные вопросы, пожалуйста, свяжитесь с колледжем.',
+            'success': 'Вы успешно записаны на консультацию. ✅\n\nЕсли у вас возникнут дополнительные вопросы, пожалуйста, свяжитесь с колледжем.',
             'edit_success': 'Ваша запись на консультацию успешно обновлена.\n\nЕсли у вас возникнут дополнительные вопросы, пожалуйста, свяжитесь с колледжем.',
             'slot_taken': 'Выбранное время уже занято. Пожалуйста, выберите другой доступный вариант.',
             'confirm_pointer': 'Пожалуйста, используйте кнопки ниже для подтверждения записи.'
@@ -78,7 +78,7 @@ record_buttons = {
             'data': 'Сураныч, консультациянын күнүн тандаңыз.',
 
             'confirm': 'Киргизилген маалыматтарды текшерип, жазууну ырастаңыз.',
-            'success': 'Сиз консультацияга ийгиликтүү жазылдыңыз.\n\nКошумча суроолоруңуз болсо, колледж менен байланышыңыз.',
+            'success': 'Сиз консультацияга ийгиликтүү жазылдыңыз. ✅\n\nКошумча суроолоруңуз болсо, колледж менен байланышыңыз.',
             'edit_success': 'Консультацияга болгон жазууңуз ийгиликтүү жаңыртылды.\n\nКошумча суроолоруңуз болсо, колледж менен байланышыңыз.',
             'slot_taken': 'Тандалган убакыт бош эмес. Сураныч, башка жеткиликтүү убакытты тандаңыз.',
             'confirm_pointer': 'Жазууну ырастоо үчүн төмөнкү баскычтарды колдонуңуз.'
@@ -121,7 +121,7 @@ record_buttons = {
             'data': 'Please choose a consultation date.',
 
             'confirm': 'Please review the entered details and confirm your booking.',
-            'success': 'Your consultation booking has been successfully created.\n\nIf you have any additional questions, please contact the college.',
+            'success': 'Your consultation booking has been successfully created. ✅\n\nIf you have any additional questions, please contact the college.',
             'edit_success': 'Your consultation booking has been successfully updated.\n\nIf you have any additional questions, please contact the college.',
             'slot_taken': 'The selected time is no longer available. Please choose another option.',
             'confirm_pointer': 'Please use the buttons below to confirm your booking.'
