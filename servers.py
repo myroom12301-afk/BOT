@@ -404,6 +404,46 @@ def get_important_event_by_id(event_id):
     return row
 
 
+def auto_expire_past_slots():
+    """Soft-delete all active slots whose date has already passed."""
+    from datetime import date
+    today = date.today().isoformat()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT id, user_id FROM cons_slots
+        WHERE status = 'active' AND slot_date < ?
+        """,
+        (today,),
+    )
+    expired = cursor.fetchall()
+
+    if not expired:
+        cursor.close()
+        return 0
+
+    expired_ids = [row[0] for row in expired]
+    user_ids = list({row[1] for row in expired})
+
+    cursor.execute(
+        f"UPDATE cons_slots SET status = 'deleted' WHERE id IN ({','.join('?' * len(expired_ids))})",
+        expired_ids,
+    )
+
+    cursor.execute(
+        f"""
+        UPDATE users_data
+        SET name = NULL, who = NULL, phone_number = NULL, data = NULL, meet_time = NULL
+        WHERE user_id IN ({','.join('?' * len(user_ids))})
+        """,
+        user_ids,
+    )
+
+    conn.commit()
+    cursor.close()
+    return len(expired_ids)
+
+
 def deactivate_important_event(event_id):
     cursor = conn.cursor()
     cursor.execute(

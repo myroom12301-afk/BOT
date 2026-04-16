@@ -10,7 +10,7 @@ from Handlers.callback_data import router as callback_router
 from Handlers.main_choose import router as about_college_router
 from Handlers.about_college_etc import router as etc_router
 import asyncio
-from servers import init_db
+from servers import init_db, auto_expire_past_slots
 from Handlers.about_admis import router as admis_router
 from Handlers.about_cons import router as cons_router
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -26,6 +26,18 @@ disp = Dispatcher(storage=MemoryStorage())
 
 init_db()
 
+logger = logging.getLogger(__name__)
+
+
+async def expire_slots_task():
+    """Background task: soft-delete past consultations every hour."""
+    while True:
+        try:
+            auto_expire_past_slots()
+        except Exception:
+            logger.exception("Error in expire_slots_task")
+        await asyncio.sleep(3600)
+
 
 async def main():
     disp.include_router(error_router)
@@ -38,6 +50,8 @@ async def main():
     disp.include_router(admis_router)
     disp.include_router(cons_router)
     disp.include_router(etc_router)
+    asyncio.create_task(expire_slots_task())
     await disp.start_polling(bot)
+
 if __name__ == "__main__":
     asyncio.run(main())
